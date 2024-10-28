@@ -1,0 +1,460 @@
+Disassembly Listing for 18323_software_i2c2
+Generated From:
+C:/Users/kojim/MPLABXProjects/18323_software_i2c2.X/dist/default/debug/18323_software_i2c2.X.debug.elf
+2024/10/26 1:28:23
+
+---  C:/Users/kojim/MPLABXProjects/18323_software_i2c2.X/newmain.c  -------------------------------------
+1:             /*
+2:              * File:   newmain.c
+3:              * Author: kojim
+4:              *
+5:              * Created on 2024/10/20, 23:15
+6:              */
+7:             
+8:             // PIC16F18313 Configuration Bit Settings
+9:             
+10:            // 'C' source line config statements
+11:            
+12:            // CONFIG1
+13:            #pragma config FEXTOSC = OFF    // FEXTOSC External Oscillator mode Selection bits (Oscillator not enabled)
+14:            #pragma config RSTOSC = HFINT32 // Power-up default value for COSC bits (HFINTOSC with 2x PLL (32MHz))
+15:            #pragma config CLKOUTEN = OFF   // Clock Out Enable bit (CLKOUT function is disabled; I/O or oscillator function on OSC2)
+16:            #pragma config CSWEN = OFF      // Clock Switch Enable bit (The NOSC and NDIV bits cannot be changed by user software)
+17:            #pragma config FCMEN = OFF      // Fail-Safe Clock Monitor Enable (Fail-Safe Clock Monitor is disabled)
+18:            
+19:            // CONFIG2
+20:            #pragma config MCLRE = OFF      // Master Clear Enable bit (MCLR/VPP pin function is digital input; MCLR internally disabled; Weak pull-up under control of port pin's WPU control bit.)
+21:            #pragma config PWRTE = ON       // Power-up Timer Enable bit (PWRT enabled)
+22:            #pragma config WDTE = OFF       // Watchdog Timer Enable bits (WDT disabled; SWDTEN is ignored)
+23:            #pragma config LPBOREN = OFF    // Low-power BOR enable bit (ULPBOR disabled)
+24:            #pragma config BOREN = OFF      // Brown-out Reset Enable bits (Brown-out Reset disabled)
+25:            #pragma config BORV = LOW       // Brown-out Reset Voltage selection bit (Brown-out voltage (Vbor) set to 2.45V)
+26:            #pragma config PPS1WAY = ON     // PPSLOCK bit One-Way Set Enable bit (The PPSLOCK bit can be cleared and set only once; PPS registers remain locked after one clear/set cycle)
+27:            #pragma config STVREN = ON      // Stack Overflow/Underflow Reset Enable bit (Stack Overflow or Underflow will cause a Reset)
+28:            #pragma config DEBUG = OFF      // Debugger enable bit (Background debugger disabled)
+29:            
+30:            // CONFIG3
+31:            #pragma config WRT = OFF        // User NVM self-write protection bits (Write protection off)
+32:            #pragma config LVP = ON         // Low Voltage Programming Enable bit (HV on MCLR/VPP must be used for programming.)
+33:            //RA3を入力として使用するために、これをオフにする必要がある。
+34:            
+35:            // CONFIG4
+36:            #pragma config CP = OFF         // User NVM Program Memory Code Protection bit (User NVM code protection disabled)
+37:            #pragma config CPD = OFF        // Data NVM Memory Code Protection bit (Data NVM code protection disabled)
+38:            
+39:            // #pragma config statements should precede project file includes.
+40:            // Use project enums instead of #define for ON and OFF.
+41:            
+42:            
+43:            #include <xc.h>
+44:            #include "SOFT_I2C.h"
+45:            #define _XTAL_FREQ 32000000
+46:            
+47:            void main(void) {
+48:                TRISC = 0x00;
+008C  0021     MOVLB 0x1
+008D  018E     CLRF TRISC
+49:                LATC = 0x01;
+008E  3001     MOVLW 0x1
+008F  0022     MOVLB 0x2
+0090  008E     MOVWF LATC
+50:                
+51:                //DEBUG
+52:                //PPS-----------------------------------------------------------------------
+53:                //UART
+54:                RC5PPS = 0b10100;//UART TX
+0091  3014     MOVLW 0x14
+0092  003D     MOVLB 0x1D
+0093  00A5     MOVWF RC5PPS
+55:                
+56:                //UART----------------------------------------------------------------------
+57:                TX1STA = 0b00100100;
+0094  3024     MOVLW 0x24
+0095  0023     MOVLB 0x3
+0096  009E     MOVWF TX1STA
+58:                RC1STA = 0b10000000;
+0097  3080     MOVLW 0x80
+0098  009D     MOVWF RC1STA
+59:                BAUD1CON = 0b00001000;
+0099  3008     MOVLW 0x8
+009A  009F     MOVWF BAUD1CON
+60:                SPBRG = 31;//250000 BAUD!!
+009B  3000     MOVLW 0x0
+009C  009C     MOVWF SP1BRGH
+009D  301F     MOVLW 0x1F
+009E  009B     MOVWF SP1BRG
+61:                
+62:                TX1REG = 'A';
+009F  3041     MOVLW 0x41
+00A0  009A     MOVWF TX1REG
+63:                
+64:                SOFT_I2C_INIT();
+00A1  20B2     CALL 0xB2
+65:                while (1){
+66:                    __delay_ms(500);
+00A2  3015     MOVLW 0x15
+00A3  00FA     MOVWF 0x1FA
+00A4  304B     MOVLW 0x4B
+00A5  00F9     MOVWF 0x1F9
+00A6  30BE     MOVLW 0xBE
+00A7  0B89     DECFSZ WREG, F
+00A8  28A7     GOTO 0xA7
+00A9  0BF9     DECFSZ 0x1F9, F
+00AA  28A7     GOTO 0xA7
+00AB  0BFA     DECFSZ 0x1FA, F
+00AC  28A7     GOTO 0xA7
+00AD  3200     BRA 0xAE
+67:                    LATC ^= 0x08;
+00AE  3008     MOVLW 0x8
+00AF  0022     MOVLB 0x2
+00B0  068E     XORWF LATC, F
+68:                }
+69:                return;
+70:            }
+---  C:/Users/kojim/MPLABXProjects/18323_software_i2c2.X/SOFT_I2C.c  ------------------------------------
+1:             #include <xc.h>
+2:             
+3:             #include "SOFT_I2C.h"
+4:             
+5:             //USER--------------------------------------------------------------------------
+6:             //PIC割り込み設定
+7:             void INT_SETTNG(void){//必ず環境，大本のプログラムに合わせて割り込みの設定を書くこと
+8:                 INTCON = 0xC0;//PIE, PEIE
+00CD  30C0     MOVLW 0xC0
+00CE  008B     MOVWF INTCON
+9:                 PIE0 = 0x10;//IOC
+00CF  3010     MOVLW 0x10
+00D0  0021     MOVLB 0x1
+00D1  0090     MOVWF PIE0
+10:            }
+00D2  0008     RETURN
+11:            
+12:            //ソフトウェアI2Cを使用しているときに割り込みのように使う関数
+13:            void SOFT_I2C_INT(void){
+14:                if (SOFT_I2C_STATUS & S_D_nA){//DATA
+00C3  1EF0     BTFSS 0xF0, 0x5
+00C4  0008     RETURN
+15:                    if (SOFT_I2C_BUFF & 0x01){
+00C5  1C75     BTFSS 0xF5, 0x0
+00C6  28CA     GOTO 0xCA
+16:                        LATC2 = 1;
+00C7  0022     MOVLB 0x2
+00C8  150E     BSF LATC, 0x2
+17:                    }
+00C9  0008     RETURN
+18:                    else {
+19:                        LATC2 = 0;
+00CA  0022     MOVLB 0x2
+00CB  110E     BCF LATC, 0x2
+20:                    }
+21:                }
+22:                
+23:            }
+00CC  0008     RETURN
+24:            
+25:            //通信エラーが発生したときに飛ぶ関数
+26:            void I2C_ERROR_INT(void){
+27:                
+28:            }
+29:            
+30:            //END---------------------------------------------------------------------------
+31:            
+32:            //#define SDA_HI() SDA_TRIS = TRIS_INPUT; SDA_IOC_P = 1; SDA_IOC_N = 1
+33:            //#define SDA_LO() SDA_TRIS = TRIS_OUTPUT; SDA_PIN = PIN_LO; SDA_IOC_P = 0; SDA_IOC_N = 0
+34:            #define SDA_HI() SDA_TRIS = TRIS_INPUT; SDA_IOC_N = 1
+35:            #define SDA_LO() SDA_TRIS = TRIS_OUTPUT; SDA_PIN = PIN_LO; SDA_IOC_N = 0
+36:            
+37:            //#define SCL_HI() SCL_TRIS = TRIS_INPUT
+38:            //#define SCL_LO() SCL_TRIS = TRIS_OUTPUT; SCL_PIN = PIN_LO
+39:            
+40:            void SOFT_I2C_INIT(void){
+41:                //ピンの設定
+42:                SDA_TRIS = TRIS_INPUT;
+00B2  0021     MOVLB 0x1
+00B3  168C     BSF TRISA, 0x5
+43:                SDA_ANSEL = ANSEL_DIGI;
+00B4  0023     MOVLB 0x3
+00B5  128C     BCF ANSELA, 0x5
+44:                
+45:                SCL_TRIS = TRIS_INPUT;
+00B6  0021     MOVLB 0x1
+00B7  160C     BSF TRISA, 0x4
+46:                SCL_ANSEL = ANSEL_DIGI;
+00B8  0023     MOVLB 0x3
+00B9  120C     BCF ANSELA, 0x4
+47:                
+48:                SDA_PIN = PIN_LO;
+00BA  0020     MOVLB 0x0
+00BB  128C     BCF PORTA, 0x5
+49:                //test
+50:                //LATA4 = 0;
+51:                
+52:                //ここからSDAピンの状態はLOになっている状態としてプログラムを書く
+53:                //そのためこれ以降このレジスタを変更することは禁止する
+54:                
+55:                //クロックストレッチを行うため
+56:                SCL_PIN = PIN_LO;
+00BC  120C     BCF PORTA, 0x4
+57:                
+58:                //INT-----------------------------------------------------------------------
+59:                INT_SETTNG();
+00BD  20CD     CALL 0xCD
+60:                
+61:                //IOC-----------------------------------------------------------------------
+62:                //SDA_IOC_P = 1;
+63:                SCL_IOC_P = 1;
+00BE  0027     MOVLB 0x7
+00BF  1611     BSF IOCAP, 0x4
+64:                
+65:                SDA_IOC_N = 1;
+00C0  1692     BSF IOCAN, 0x5
+66:                SCL_IOC_N = 1;
+00C1  1612     BSF IOCAN, 0x4
+67:                
+68:                
+69:            }
+00C2  0008     RETURN
+70:            
+71:            //    //debug
+72:            //    LATC1 = 1;
+73:            //    LATC1 = 0;
+74:            //    //end
+75:            
+76:            void __interrupt() SOFTWARE_I2C_INT_PIC(void) {
+0004  147E     BSF 0x3FE, 0x0
+0005  3180     MOVLP 0x0
+77:                if(IOC_FLAG){
+0006  0020     MOVLB 0x0
+0007  1E10     BTFSS PIR0, 0x4
+0008  287D     GOTO 0x7D
+78:                    //ここでデータを見ると，取りこぼしが減るかもしれないのでここでデータを見る
+79:                    SOFT_I2C_BUFF_PORT = SDA_PORT;
+0009  080C     MOVF PORTA, W
+000A  00F4     MOVWF SOFT_I2C_BUFF_PORT
+80:                    if (SCL_IOC){
+000B  0027     MOVLB 0x7
+000C  1E13     BTFSS IOCAF, 0x4
+000D  2871     GOTO 0x71
+81:                        if (SOFT_I2C_FLAG0 & S_MINE){
+000E  1F72     BTFSS 0x3F2, 0x6
+000F  286E     GOTO 0x6E
+82:                            if(SCL_PIN == PIN_HI){//CLK↑
+0010  0020     MOVLB 0x0
+0011  1E0C     BTFSS PORTA, 0x4
+0012  2849     GOTO 0x49
+83:                                //アドレス受信時
+84:                                if ((SOFT_I2C_FLAG0 & S_R_nW) == 0) {//READ(DATA or ADD)
+0013  1972     BTFSC SOFT_I2C_FLAG0, 0x2
+0014  2844     GOTO 0x44
+85:                                    if (SOFT_I2C_BUFF_PORT & SDA_PIN_NUM) {//SDA:HI
+0015  1EF4     BTFSS SOFT_I2C_BUFF_PORT, 0x5
+0016  2819     GOTO 0x19
+86:                                        SOFT_I2C_BUFF_SR |= SOFT_I2C_BIT_COUNT2;
+0017  0877     MOVF SOFT_I2C_BIT_COUNT2, W
+0018  04F3     IORWF SOFT_I2C_BUFF_SR, F
+87:                                    }
+88:                                    if (SOFT_I2C_BIT_COUNT2 == 1){//W or R BIT
+0019  0377     DECF SOFT_I2C_BIT_COUNT2, W
+001A  1D03     BTFSS STATUS, 0x2
+001B  2844     GOTO 0x44
+89:                                        TX1REG = SOFT_I2C_BUFF_SR;
+001C  0873     MOVF SOFT_I2C_BUFF_SR, W
+001D  0023     MOVLB 0x3
+001E  009A     MOVWF TX1REG
+90:                                        if ((SOFT_I2C_FLAG0 & S_D_nA) == 0){//ADDRESS
+001F  1AF2     BTFSC 0x1F2, 0x5
+0020  2836     GOTO 0x36
+91:                                            //まずは，この通信のアドレスが自分のものかどうか判定する．
+92:                                            if (SOFT_I2C_BUFF_SR != SOFT_I2C_ADD) {
+0021  3010     MOVLW 0x10
+0022  0673     XORWF 0x1F3, W
+0023  1903     BTFSC STATUS, 0x2
+0024  2828     GOTO 0x28
+93:                                                SOFT_I2C_FLAG0 &= ~S_MINE;
+0025  30BF     MOVLW 0xBF
+0026  05F2     ANDWF 0x1F2, F
+94:                                            }
+0027  2834     GOTO 0x34
+95:                                            else {
+96:                                                asm("MOVLB 0x0");
+0028  0020     MOVLB 0x0
+97:                                                while (SCL_PIN == PIN_HI);
+0029  0020     MOVLB 0x0
+002A  1A0C     BTFSC PORTA, 0x4
+002B  2829     GOTO 0x29
+98:                                                SDA_LO();//ACK
+002C  0021     MOVLB 0x1
+002D  128C     BCF TRISA, 0x5
+002E  0020     MOVLB 0x0
+002F  128C     BCF PORTA, 0x5
+0030  0027     MOVLB 0x7
+0031  1292     BCF IOCAN, 0x5
+99:                                                //自分のデータだった場合は処理を続ける
+100:                                               if (SOFT_I2C_BUFF_SR & 0x01){//Slave W
+0032  1873     BTFSC 0x3F3, 0x0
+101:                                                   SOFT_I2C_FLAG0 |= S_R_nW;
+0033  1572     BSF 0x3F2, 0x2
+102:                                               }
+103:                                               else {//Slave R
+104:                                                   
+105:                                               }
+106:                                           }
+107:                                           SOFT_I2C_FLAG0 |= S_D_nA;//NEXT DATA
+0034  16F2     BSF 0x3F2, 0x5
+108:                                       }
+0035  2841     GOTO 0x41
+109:                                       else {//DATA
+110:                                           while (SCL_PIN == PIN_HI);
+0036  0020     MOVLB 0x0
+0037  1A0C     BTFSC PORTA, 0x4
+0038  2836     GOTO 0x36
+111:                                           SDA_LO();//ACK
+0039  0021     MOVLB 0x1
+003A  128C     BCF TRISA, 0x5
+003B  0020     MOVLB 0x0
+003C  128C     BCF PORTA, 0x5
+003D  0027     MOVLB 0x7
+003E  1292     BCF IOCAN, 0x5
+112:                                           SOFT_I2C_BUFF = SOFT_I2C_BUFF_SR;
+003F  0873     MOVF 0x3F3, W
+0040  00F5     MOVWF 0x3F5
+113:                                       }
+114:                                       SCL_IOC_P = 0;
+0041  0027     MOVLB 0x7
+0042  1211     BCF IOCAP, 0x4
+115:                                       SCL_IOC_N = 1;
+0043  1612     BSF IOCAN, 0x4
+116:                                   }
+117:                               }
+118:                               SOFT_I2C_BIT_COUNT1 ++;
+0044  3001     MOVLW 0x1
+0045  07F8     ADDWF 0x3F8, F
+119:                               SOFT_I2C_BIT_COUNT2 >>= 1;//高速化のため
+0046  1003     BCF STATUS, 0x0
+0047  0CF7     RRF 0x3F7, F
+120:                               //コレをすることで，データを代入するときにそのままorで入れることができる（今までは普通にインクリメントしてたので，1をビット数分シフトしてた．そうすると遅い）
+121:                           }
+0048  286E     GOTO 0x6E
+122:                           else{//CLK↓
+123:                               
+124:                               if(SOFT_I2C_FLAG0 & S_S){
+0049  1DF2     BTFSS 0x3F2, 0x3
+004A  2855     GOTO 0x55
+125:                                   SOFT_I2C_BUFF_SR = 0x00;
+004B  01F3     CLRF 0x3F3
+126:                                   SOFT_I2C_FLAG0 &= ~(S_S | S_D_nA | S_R_nW);//START ADDRESS READ
+004C  30D3     MOVLW 0xD3
+004D  05F2     ANDWF 0x3F2, F
+127:                                   SOFT_I2C_STATUS = SOFT_I2C_FLAG0;
+004E  0872     MOVF 0x3F2, W
+004F  00F0     MOVWF 0x3F0
+128:                                   SOFT_I2C_BIT_COUNT1 = 0;
+0050  01F8     CLRF 0x3F8
+129:                                   SOFT_I2C_BIT_COUNT2 = 0x80;
+0051  3080     MOVLW 0x80
+0052  00F7     MOVWF 0x3F7
+130:                                   SOFT_I2C_BYTE_COUNT = 0;
+0053  01F6     CLRF 0x3F6
+0054  286B     GOTO 0x6B
+131:                                   SCL_IOC_N = 0;
+132:                                   SCL_IOC_P = 1;
+133:                               }
+134:                               //送信時のみ使用
+135:                               else if(SOFT_I2C_FLAG0 & S_R_nW){//送信時ビットをセットするタイミング
+0055  1972     BTFSC 0x3F2, 0x2
+0056  286E     GOTO 0x6E
+136:           
+137:                               }
+138:                               //ACK
+139:                               else if (SOFT_I2C_BIT_COUNT1 == 8){
+0057  3008     MOVLW 0x8
+0058  0678     XORWF 0x3F8, W
+0059  1D03     BTFSS STATUS, 0x2
+005A  286E     GOTO 0x6E
+140:                                   //debug
+141:                                   LATC1 = 1;
+005B  0022     MOVLB 0x2
+005C  148E     BSF LATC, 0x1
+142:                                   LATC1 = 0;
+005D  108E     BCF LATC, 0x1
+143:                                   //end
+144:                                   SDA_HI();//ACK END
+005E  0021     MOVLB 0x1
+005F  168C     BSF TRISA, 0x5
+0060  0027     MOVLB 0x7
+0061  1692     BSF IOCAN, 0x5
+145:                                   //クロックストレッチするならここ
+146:                                   
+147:                                   
+148:                                   SOFT_I2C_INT();
+0062  20C3     CALL 0xC3
+149:                                   SOFT_I2C_STATUS = SOFT_I2C_FLAG0;
+0063  0872     MOVF 0x3F2, W
+0064  00F0     MOVWF 0x3F0
+150:                                   
+151:                                   //V_CLEAR
+152:                                   SOFT_I2C_BUFF_SR = 0;
+0065  01F3     CLRF 0x3F3
+153:                                   SOFT_I2C_BIT_COUNT1 = 0;
+0066  01F8     CLRF 0x3F8
+154:                                   SOFT_I2C_BIT_COUNT2 = 0x80;
+0067  3080     MOVLW 0x80
+0068  00F7     MOVWF 0x3F7
+155:                                   SOFT_I2C_BYTE_COUNT ++;
+0069  3001     MOVLW 0x1
+006A  07F6     ADDWF 0x3F6, F
+156:                                   SCL_IOC_N = 0;
+006B  0027     MOVLB 0x7
+006C  1212     BCF IOCAN, 0x4
+157:                                   SCL_IOC_P = 1;
+006D  1611     BSF IOCAP, 0x4
+158:                               }
+159:                           }
+160:                       }
+161:                       SCL_IOC = 0;
+006E  0027     MOVLB 0x7
+006F  1213     BCF IOCAF, 0x4
+162:                   }
+0070  287B     GOTO 0x7B
+163:                   //まずはこのビットがスタート，ストップBITかどうか判別する
+164:                   else if (SDA_IOC){//SDAが変化した
+0071  1E93     BTFSS IOCAF, 0x5
+0072  287B     GOTO 0x7B
+165:                       if(SCL_PIN == PIN_HI){
+0073  0020     MOVLB 0x0
+0074  1E0C     BTFSS PORTA, 0x4
+0075  287B     GOTO 0x7B
+166:                           //START
+167:                           SOFT_I2C_FLAG0 |= S_S | S_MINE;//START
+0076  3048     MOVLW 0x48
+0077  04F2     IORWF SOFT_I2C_FLAG0, F
+168:           //                    //debug
+169:           //                    LATC1 = 1;
+170:           //                    LATC1 = 0;
+171:           //                    //end
+172:                           SCL_IOC_N = 1;
+0078  0027     MOVLB 0x7
+0079  1612     BSF IOCAN, 0x4
+173:                           SCL_IOC_P = 1;
+007A  1611     BSF IOCAP, 0x4
+174:                       }
+175:                   }
+176:                   SDA_IOC = 0;//割り込みフラグ　リセット
+007B  0027     MOVLB 0x7
+007C  1293     BCF IOCAF, 0x5
+177:               }
+178:           }
+007D  107E     BCF 0x3FE, 0x0
+---  C:/Users/kojim/AppData/Local/Temp/xcAstis/driver_tmp_1.s  ------------------------------------------
+0080  01F0     CLRF 0x3F0
+0081  01F1     CLRF 0x3F1
+0082  01F2     CLRF 0x3F2
+0083  01F3     CLRF 0x3F3
+0084  01F4     CLRF 0x3F4
+0085  01F5     CLRF 0x3F5
+0086  01F6     CLRF 0x3F6
+0087  01F7     CLRF 0x3F7
+0088  01F8     CLRF 0x3F8
+0089  107E     BCF 0x3FE, 0x0
+008A  0020     MOVLB 0x0
+008B  288C     GOTO 0x8C

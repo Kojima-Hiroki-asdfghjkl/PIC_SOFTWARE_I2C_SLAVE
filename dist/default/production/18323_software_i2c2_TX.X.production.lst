@@ -1,0 +1,1867 @@
+
+
+Microchip MPLAB XC8 Assembler V2.50 build 20240725155939 
+                                                                                               Sat Oct 26 20:51:19 2024
+
+Microchip MPLAB XC8 C Compiler v2.50 (Free license) build 20240725155939 Og9 
+     1                           	processor	16F18323
+     2                           	pagewidth 120
+     3                           	opt	flic
+     4                           	psect	idataCOMMON,global,class=CODE,space=0,delta=2,noexec
+     5                           	psect	cinit,global,class=CODE,space=0,merge=1,delta=2
+     6                           	psect	bssCOMMON,global,class=COMMON,space=1,delta=1,noexec
+     7                           	psect	dataCOMMON,global,class=COMMON,space=1,delta=1,noexec
+     8                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1,noexec
+     9                           	psect	maintext,global,class=CODE,space=0,merge=1,split=1,delta=2
+    10                           	psect	text1,local,class=CODE,space=0,merge=1,delta=2
+    11                           	psect	text2,local,class=CODE,space=0,merge=1,delta=2
+    12                           	psect	intentry,global,class=CODE,space=0,delta=2
+    13                           	psect	text4,local,class=CODE,space=0,merge=1,delta=2
+    14                           	psect	config,global,abs,ovrld,class=CONFIG,space=4,delta=2,noexec
+    15                           	dabs	1,0x7E,2
+    16     0000                     
+    17                           ; Generated 11/01/2024 GMT
+    18                           ; 
+    19                           ; Copyright © 2024, Microchip Technology Inc. and its subsidiaries ("Microchip")
+    20                           ; All rights reserved.
+    21                           ; 
+    22                           ; This software is developed by Microchip Technology Inc. and its subsidiaries ("Microch
+      +                          ip").
+    23                           ; 
+    24                           ; Redistribution and use in source and binary forms, with or without modification, are
+    25                           ; permitted provided that the following conditions are met:
+    26                           ; 
+    27                           ;     1. Redistributions of source code must retain the above copyright notice, this lis
+      +                          t of
+    28                           ;        conditions and the following disclaimer.
+    29                           ; 
+    30                           ;     2. Redistributions in binary form must reproduce the above copyright notice, this 
+      +                          list
+    31                           ;        of conditions and the following disclaimer in the documentation and/or other
+    32                           ;        materials provided with the distribution. Publication is not required when
+    33                           ;        this file is used in an embedded application.
+    34                           ; 
+    35                           ;     3. Microchip's name may not be used to endorse or promote products derived from th
+      +                          is
+    36                           ;        software without specific prior written permission.
+    37                           ; 
+    38                           ; THIS SOFTWARE IS PROVIDED BY MICROCHIP "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    39                           ; INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS F
+      +                          OR
+    40                           ; PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL MICROCHIP BE LIABLE FOR ANY DIRECT, INDIREC
+      +                          T,
+    41                           ; INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO
+    42                           ; PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS
+    43                           ; INTERRUPTION) HOWSOEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, ST
+      +                          RICT
+    44                           ; LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U
+      +                          SE OF
+    45                           ; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    46                           ; 
+    47                           ; 
+    48                           ; Code-generator required, PIC16F18323 Definitions
+    49                           ; 
+    50                           ; SFR Addresses
+    51     0008                     bsr             equ	8
+    52     0005                     fsr0h           equ	5
+    53     0004                     fsr0l           equ	4
+    54     0007                     fsr1h           equ	7
+    55     0006                     fsr1l           equ	6
+    56     0000                     indf            equ	0
+    57     0000                     indf0           equ	0
+    58     0001                     indf1           equ	1
+    59     000B                     intcon          equ	11
+    60     0002                     pc              equ	2
+    61     0002                     pcl             equ	2
+    62     000A                     pclath          equ	10
+    63     0003                     status          equ	3
+    64     0009                     wreg            equ	9
+    65     0000                     INDF0           equ	0	;# 
+    66     0001                     INDF1           equ	1	;# 
+    67     0002                     PCL             equ	2	;# 
+    68     0003                     STATUS          equ	3	;# 
+    69     0004                     FSR0L           equ	4	;# 
+    70     0005                     FSR0H           equ	5	;# 
+    71     0006                     FSR1L           equ	6	;# 
+    72     0007                     FSR1H           equ	7	;# 
+    73     0008                     BSR             equ	8	;# 
+    74     0009                     WREG            equ	9	;# 
+    75     000A                     PCLATH          equ	10	;# 
+    76     000B                     INTCON          equ	11	;# 
+    77     000C                     PORTA           equ	12	;# 
+    78     000E                     PORTC           equ	14	;# 
+    79     0010                     PIR0            equ	16	;# 
+    80     0011                     PIR1            equ	17	;# 
+    81     0012                     PIR2            equ	18	;# 
+    82     0013                     PIR3            equ	19	;# 
+    83     0014                     PIR4            equ	20	;# 
+    84     0015                     TMR0L           equ	21	;# 
+    85     0015                     TMR0            equ	21	;# 
+    86     0016                     TMR0H           equ	22	;# 
+    87     0016                     PR0             equ	22	;# 
+    88     0017                     T0CON0          equ	23	;# 
+    89     0018                     T0CON1          equ	24	;# 
+    90     0019                     TMR1            equ	25	;# 
+    91     0019                     TMR1L           equ	25	;# 
+    92     001A                     TMR1H           equ	26	;# 
+    93     001B                     T1CON           equ	27	;# 
+    94     001C                     T1GCON          equ	28	;# 
+    95     001D                     TMR2            equ	29	;# 
+    96     001E                     PR2             equ	30	;# 
+    97     001F                     T2CON           equ	31	;# 
+    98     008C                     TRISA           equ	140	;# 
+    99     008E                     TRISC           equ	142	;# 
+   100     0090                     PIE0            equ	144	;# 
+   101     0091                     PIE1            equ	145	;# 
+   102     0092                     PIE2            equ	146	;# 
+   103     0093                     PIE3            equ	147	;# 
+   104     0094                     PIE4            equ	148	;# 
+   105     0097                     WDTCON          equ	151	;# 
+   106     009B                     ADRES           equ	155	;# 
+   107     009B                     ADRESL          equ	155	;# 
+   108     009C                     ADRESH          equ	156	;# 
+   109     009D                     ADCON0          equ	157	;# 
+   110     009E                     ADCON1          equ	158	;# 
+   111     009F                     ADACT           equ	159	;# 
+   112     010C                     LATA            equ	268	;# 
+   113     010E                     LATC            equ	270	;# 
+   114     0111                     CM1CON0         equ	273	;# 
+   115     0112                     CM1CON1         equ	274	;# 
+   116     0113                     CM2CON0         equ	275	;# 
+   117     0114                     CM2CON1         equ	276	;# 
+   118     0115                     CMOUT           equ	277	;# 
+   119     0116                     BORCON          equ	278	;# 
+   120     0117                     FVRCON          equ	279	;# 
+   121     0118                     DACCON0         equ	280	;# 
+   122     0119                     DACCON1         equ	281	;# 
+   123     018C                     ANSELA          equ	396	;# 
+   124     018E                     ANSELC          equ	398	;# 
+   125     0197                     VREGCON         equ	407	;# 
+   126     0199                     RC1REG          equ	409	;# 
+   127     0199                     RCREG           equ	409	;# 
+   128     0199                     RCREG1          equ	409	;# 
+   129     019A                     TX1REG          equ	410	;# 
+   130     019A                     TXREG1          equ	410	;# 
+   131     019A                     TXREG           equ	410	;# 
+   132     019B                     SP1BRG          equ	411	;# 
+   133     019B                     SPBRG           equ	411	;# 
+   134     019B                     SP1BRGL         equ	411	;# 
+   135     019B                     SPBRG1          equ	411	;# 
+   136     019B                     SPBRGL          equ	411	;# 
+   137     019C                     SP1BRGH         equ	412	;# 
+   138     019C                     SPBRGH          equ	412	;# 
+   139     019C                     SPBRGH1         equ	412	;# 
+   140     019D                     RC1STA          equ	413	;# 
+   141     019D                     RCSTA1          equ	413	;# 
+   142     019D                     RCSTA           equ	413	;# 
+   143     019E                     TX1STA          equ	414	;# 
+   144     019E                     TXSTA1          equ	414	;# 
+   145     019E                     TXSTA           equ	414	;# 
+   146     019F                     BAUD1CON        equ	415	;# 
+   147     019F                     BAUDCON1        equ	415	;# 
+   148     019F                     BAUDCTL1        equ	415	;# 
+   149     019F                     BAUDCON         equ	415	;# 
+   150     019F                     BAUDCTL         equ	415	;# 
+   151     020C                     WPUA            equ	524	;# 
+   152     020E                     WPUC            equ	526	;# 
+   153     0211                     SSP1BUF         equ	529	;# 
+   154     0211                     SSPBUF          equ	529	;# 
+   155     0212                     SSP1ADD         equ	530	;# 
+   156     0212                     SSPADD          equ	530	;# 
+   157     0213                     SSP1MSK         equ	531	;# 
+   158     0213                     SSPMSK          equ	531	;# 
+   159     0214                     SSP1STAT        equ	532	;# 
+   160     0214                     SSPSTAT         equ	532	;# 
+   161     0215                     SSP1CON1        equ	533	;# 
+   162     0215                     SSPCON          equ	533	;# 
+   163     0215                     SSPCON1         equ	533	;# 
+   164     0215                     SSP1CON         equ	533	;# 
+   165     0216                     SSP1CON2        equ	534	;# 
+   166     0216                     SSPCON2         equ	534	;# 
+   167     0217                     SSP1CON3        equ	535	;# 
+   168     0217                     SSPCON3         equ	535	;# 
+   169     028C                     ODCONA          equ	652	;# 
+   170     028E                     ODCONC          equ	654	;# 
+   171     0291                     CCPR1           equ	657	;# 
+   172     0291                     CCPR1L          equ	657	;# 
+   173     0292                     CCPR1H          equ	658	;# 
+   174     0293                     CCP1CON         equ	659	;# 
+   175     0294                     CCP1CAP         equ	660	;# 
+   176     0295                     CCPR2           equ	661	;# 
+   177     0295                     CCPR2L          equ	661	;# 
+   178     0296                     CCPR2H          equ	662	;# 
+   179     0297                     CCP2CON         equ	663	;# 
+   180     0298                     CCP2CAP         equ	664	;# 
+   181     030C                     SLRCONA         equ	780	;# 
+   182     030E                     SLRCONC         equ	782	;# 
+   183     038C                     INLVLA          equ	908	;# 
+   184     038E                     INLVLC          equ	910	;# 
+   185     0391                     IOCAP           equ	913	;# 
+   186     0392                     IOCAN           equ	914	;# 
+   187     0393                     IOCAF           equ	915	;# 
+   188     0397                     IOCCP           equ	919	;# 
+   189     0398                     IOCCN           equ	920	;# 
+   190     0399                     IOCCF           equ	921	;# 
+   191     039A                     CLKRCON         equ	922	;# 
+   192     039C                     MDCON           equ	924	;# 
+   193     039D                     MDSRC           equ	925	;# 
+   194     039E                     MDCARH          equ	926	;# 
+   195     039F                     MDCARL          equ	927	;# 
+   196     0498                     NCO1ACC         equ	1176	;# 
+   197     0498                     NCO1ACCL        equ	1176	;# 
+   198     0499                     NCO1ACCH        equ	1177	;# 
+   199     049A                     NCO1ACCU        equ	1178	;# 
+   200     049B                     NCO1INC         equ	1179	;# 
+   201     049B                     NCO1INCL        equ	1179	;# 
+   202     049C                     NCO1INCH        equ	1180	;# 
+   203     049D                     NCO1INCU        equ	1181	;# 
+   204     049E                     NCO1CON         equ	1182	;# 
+   205     049F                     NCO1CLK         equ	1183	;# 
+   206     0617                     PWM5DCL         equ	1559	;# 
+   207     0618                     PWM5DCH         equ	1560	;# 
+   208     0619                     PWM5CON         equ	1561	;# 
+   209     0619                     PWM5CON0        equ	1561	;# 
+   210     061A                     PWM6DCL         equ	1562	;# 
+   211     061B                     PWM6DCH         equ	1563	;# 
+   212     061C                     PWM6CON         equ	1564	;# 
+   213     061C                     PWM6CON0        equ	1564	;# 
+   214     0691                     CWG1CLKCON      equ	1681	;# 
+   215     0692                     CWG1DAT         equ	1682	;# 
+   216     0693                     CWG1DBR         equ	1683	;# 
+   217     0694                     CWG1DBF         equ	1684	;# 
+   218     0695                     CWG1CON0        equ	1685	;# 
+   219     0696                     CWG1CON1        equ	1686	;# 
+   220     0697                     CWG1AS0         equ	1687	;# 
+   221     0698                     CWG1AS1         equ	1688	;# 
+   222     0699                     CWG1STR         equ	1689	;# 
+   223     0891                     NVMADR          equ	2193	;# 
+   224     0891                     EEADR           equ	2193	;# 
+   225     0891                     PMADR           equ	2193	;# 
+   226     0891                     NVMADRL         equ	2193	;# 
+   227     0891                     EEADRL          equ	2193	;# 
+   228     0891                     PMADRL          equ	2193	;# 
+   229     0892                     NVMADRH         equ	2194	;# 
+   230     0892                     EEADRH          equ	2194	;# 
+   231     0892                     PMADRH          equ	2194	;# 
+   232     0893                     NVMDAT          equ	2195	;# 
+   233     0893                     EEDAT           equ	2195	;# 
+   234     0893                     PMDAT           equ	2195	;# 
+   235     0893                     NVMDATL         equ	2195	;# 
+   236     0893                     EEDATL          equ	2195	;# 
+   237     0893                     PMDATL          equ	2195	;# 
+   238     0894                     NVMDATH         equ	2196	;# 
+   239     0894                     EEDATH          equ	2196	;# 
+   240     0894                     PMDATH          equ	2196	;# 
+   241     0895                     NVMCON1         equ	2197	;# 
+   242     0895                     EECON1          equ	2197	;# 
+   243     0895                     PMCON1          equ	2197	;# 
+   244     0896                     NVMCON2         equ	2198	;# 
+   245     0896                     EECON2          equ	2198	;# 
+   246     0896                     PMCON2          equ	2198	;# 
+   247     089B                     PCON0           equ	2203	;# 
+   248     0911                     PMD0            equ	2321	;# 
+   249     0912                     PMD1            equ	2322	;# 
+   250     0913                     PMD2            equ	2323	;# 
+   251     0914                     PMD3            equ	2324	;# 
+   252     0915                     PMD4            equ	2325	;# 
+   253     0916                     PMD5            equ	2326	;# 
+   254     0918                     CPUDOZE         equ	2328	;# 
+   255     0919                     OSCCON1         equ	2329	;# 
+   256     091A                     OSCCON2         equ	2330	;# 
+   257     091B                     OSCCON3         equ	2331	;# 
+   258     091C                     OSCSTAT1        equ	2332	;# 
+   259     091D                     OSCEN           equ	2333	;# 
+   260     091E                     OSCTUNE         equ	2334	;# 
+   261     091F                     OSCFRQ          equ	2335	;# 
+   262     0E0F                     PPSLOCK         equ	3599	;# 
+   263     0E10                     INTPPS          equ	3600	;# 
+   264     0E11                     T0CKIPPS        equ	3601	;# 
+   265     0E12                     T1CKIPPS        equ	3602	;# 
+   266     0E13                     T1GPPS          equ	3603	;# 
+   267     0E14                     CCP1PPS         equ	3604	;# 
+   268     0E15                     CCP2PPS         equ	3605	;# 
+   269     0E18                     CWG1PPS         equ	3608	;# 
+   270     0E1A                     MDCIN1PPS       equ	3610	;# 
+   271     0E1B                     MDCIN2PPS       equ	3611	;# 
+   272     0E1C                     MDMINPPS        equ	3612	;# 
+   273     0E20                     SSP1CLKPPS      equ	3616	;# 
+   274     0E21                     SSP1DATPPS      equ	3617	;# 
+   275     0E22                     SSP1SSPPS       equ	3618	;# 
+   276     0E24                     RXPPS           equ	3620	;# 
+   277     0E25                     TXPPS           equ	3621	;# 
+   278     0E28                     CLCIN0PPS       equ	3624	;# 
+   279     0E29                     CLCIN1PPS       equ	3625	;# 
+   280     0E2A                     CLCIN2PPS       equ	3626	;# 
+   281     0E2B                     CLCIN3PPS       equ	3627	;# 
+   282     0E90                     RA0PPS          equ	3728	;# 
+   283     0E91                     RA1PPS          equ	3729	;# 
+   284     0E92                     RA2PPS          equ	3730	;# 
+   285     0E94                     RA4PPS          equ	3732	;# 
+   286     0E95                     RA5PPS          equ	3733	;# 
+   287     0EA0                     RC0PPS          equ	3744	;# 
+   288     0EA1                     RC1PPS          equ	3745	;# 
+   289     0EA2                     RC2PPS          equ	3746	;# 
+   290     0EA3                     RC3PPS          equ	3747	;# 
+   291     0EA4                     RC4PPS          equ	3748	;# 
+   292     0EA5                     RC5PPS          equ	3749	;# 
+   293     0F0F                     CLCDATA         equ	3855	;# 
+   294     0F10                     CLC1CON         equ	3856	;# 
+   295     0F11                     CLC1POL         equ	3857	;# 
+   296     0F12                     CLC1SEL0        equ	3858	;# 
+   297     0F13                     CLC1SEL1        equ	3859	;# 
+   298     0F14                     CLC1SEL2        equ	3860	;# 
+   299     0F15                     CLC1SEL3        equ	3861	;# 
+   300     0F16                     CLC1GLS0        equ	3862	;# 
+   301     0F17                     CLC1GLS1        equ	3863	;# 
+   302     0F18                     CLC1GLS2        equ	3864	;# 
+   303     0F19                     CLC1GLS3        equ	3865	;# 
+   304     0F1A                     CLC2CON         equ	3866	;# 
+   305     0F1B                     CLC2POL         equ	3867	;# 
+   306     0F1C                     CLC2SEL0        equ	3868	;# 
+   307     0F1D                     CLC2SEL1        equ	3869	;# 
+   308     0F1E                     CLC2SEL2        equ	3870	;# 
+   309     0F1F                     CLC2SEL3        equ	3871	;# 
+   310     0F20                     CLC2GLS0        equ	3872	;# 
+   311     0F21                     CLC2GLS1        equ	3873	;# 
+   312     0F22                     CLC2GLS2        equ	3874	;# 
+   313     0F23                     CLC2GLS3        equ	3875	;# 
+   314     0FE4                     STATUS_SHAD     equ	4068	;# 
+   315     0FE5                     WREG_SHAD       equ	4069	;# 
+   316     0FE6                     BSR_SHAD        equ	4070	;# 
+   317     0FE7                     PCLATH_SHAD     equ	4071	;# 
+   318     0FE8                     FSR0L_SHAD      equ	4072	;# 
+   319     0FE9                     FSR0H_SHAD      equ	4073	;# 
+   320     0FEA                     FSR1L_SHAD      equ	4074	;# 
+   321     0FEB                     FSR1H_SHAD      equ	4075	;# 
+   322     0FED                     STKPTR          equ	4077	;# 
+   323     0FEE                     TOSL            equ	4078	;# 
+   324     0FEF                     TOSH            equ	4079	;# 
+   325     0000                     INDF0           equ	0	;# 
+   326     0001                     INDF1           equ	1	;# 
+   327     0002                     PCL             equ	2	;# 
+   328     0003                     STATUS          equ	3	;# 
+   329     0004                     FSR0L           equ	4	;# 
+   330     0005                     FSR0H           equ	5	;# 
+   331     0006                     FSR1L           equ	6	;# 
+   332     0007                     FSR1H           equ	7	;# 
+   333     0008                     BSR             equ	8	;# 
+   334     0009                     WREG            equ	9	;# 
+   335     000A                     PCLATH          equ	10	;# 
+   336     000B                     INTCON          equ	11	;# 
+   337     000C                     PORTA           equ	12	;# 
+   338     000E                     PORTC           equ	14	;# 
+   339     0010                     PIR0            equ	16	;# 
+   340     0011                     PIR1            equ	17	;# 
+   341     0012                     PIR2            equ	18	;# 
+   342     0013                     PIR3            equ	19	;# 
+   343     0014                     PIR4            equ	20	;# 
+   344     0015                     TMR0L           equ	21	;# 
+   345     0015                     TMR0            equ	21	;# 
+   346     0016                     TMR0H           equ	22	;# 
+   347     0016                     PR0             equ	22	;# 
+   348     0017                     T0CON0          equ	23	;# 
+   349     0018                     T0CON1          equ	24	;# 
+   350     0019                     TMR1            equ	25	;# 
+   351     0019                     TMR1L           equ	25	;# 
+   352     001A                     TMR1H           equ	26	;# 
+   353     001B                     T1CON           equ	27	;# 
+   354     001C                     T1GCON          equ	28	;# 
+   355     001D                     TMR2            equ	29	;# 
+   356     001E                     PR2             equ	30	;# 
+   357     001F                     T2CON           equ	31	;# 
+   358     008C                     TRISA           equ	140	;# 
+   359     008E                     TRISC           equ	142	;# 
+   360     0090                     PIE0            equ	144	;# 
+   361     0091                     PIE1            equ	145	;# 
+   362     0092                     PIE2            equ	146	;# 
+   363     0093                     PIE3            equ	147	;# 
+   364     0094                     PIE4            equ	148	;# 
+   365     0097                     WDTCON          equ	151	;# 
+   366     009B                     ADRES           equ	155	;# 
+   367     009B                     ADRESL          equ	155	;# 
+   368     009C                     ADRESH          equ	156	;# 
+   369     009D                     ADCON0          equ	157	;# 
+   370     009E                     ADCON1          equ	158	;# 
+   371     009F                     ADACT           equ	159	;# 
+   372     010C                     LATA            equ	268	;# 
+   373     010E                     LATC            equ	270	;# 
+   374     0111                     CM1CON0         equ	273	;# 
+   375     0112                     CM1CON1         equ	274	;# 
+   376     0113                     CM2CON0         equ	275	;# 
+   377     0114                     CM2CON1         equ	276	;# 
+   378     0115                     CMOUT           equ	277	;# 
+   379     0116                     BORCON          equ	278	;# 
+   380     0117                     FVRCON          equ	279	;# 
+   381     0118                     DACCON0         equ	280	;# 
+   382     0119                     DACCON1         equ	281	;# 
+   383     018C                     ANSELA          equ	396	;# 
+   384     018E                     ANSELC          equ	398	;# 
+   385     0197                     VREGCON         equ	407	;# 
+   386     0199                     RC1REG          equ	409	;# 
+   387     0199                     RCREG           equ	409	;# 
+   388     0199                     RCREG1          equ	409	;# 
+   389     019A                     TX1REG          equ	410	;# 
+   390     019A                     TXREG1          equ	410	;# 
+   391     019A                     TXREG           equ	410	;# 
+   392     019B                     SP1BRG          equ	411	;# 
+   393     019B                     SPBRG           equ	411	;# 
+   394     019B                     SP1BRGL         equ	411	;# 
+   395     019B                     SPBRG1          equ	411	;# 
+   396     019B                     SPBRGL          equ	411	;# 
+   397     019C                     SP1BRGH         equ	412	;# 
+   398     019C                     SPBRGH          equ	412	;# 
+   399     019C                     SPBRGH1         equ	412	;# 
+   400     019D                     RC1STA          equ	413	;# 
+   401     019D                     RCSTA1          equ	413	;# 
+   402     019D                     RCSTA           equ	413	;# 
+   403     019E                     TX1STA          equ	414	;# 
+   404     019E                     TXSTA1          equ	414	;# 
+   405     019E                     TXSTA           equ	414	;# 
+   406     019F                     BAUD1CON        equ	415	;# 
+   407     019F                     BAUDCON1        equ	415	;# 
+   408     019F                     BAUDCTL1        equ	415	;# 
+   409     019F                     BAUDCON         equ	415	;# 
+   410     019F                     BAUDCTL         equ	415	;# 
+   411     020C                     WPUA            equ	524	;# 
+   412     020E                     WPUC            equ	526	;# 
+   413     0211                     SSP1BUF         equ	529	;# 
+   414     0211                     SSPBUF          equ	529	;# 
+   415     0212                     SSP1ADD         equ	530	;# 
+   416     0212                     SSPADD          equ	530	;# 
+   417     0213                     SSP1MSK         equ	531	;# 
+   418     0213                     SSPMSK          equ	531	;# 
+   419     0214                     SSP1STAT        equ	532	;# 
+   420     0214                     SSPSTAT         equ	532	;# 
+   421     0215                     SSP1CON1        equ	533	;# 
+   422     0215                     SSPCON          equ	533	;# 
+   423     0215                     SSPCON1         equ	533	;# 
+   424     0215                     SSP1CON         equ	533	;# 
+   425     0216                     SSP1CON2        equ	534	;# 
+   426     0216                     SSPCON2         equ	534	;# 
+   427     0217                     SSP1CON3        equ	535	;# 
+   428     0217                     SSPCON3         equ	535	;# 
+   429     028C                     ODCONA          equ	652	;# 
+   430     028E                     ODCONC          equ	654	;# 
+   431     0291                     CCPR1           equ	657	;# 
+   432     0291                     CCPR1L          equ	657	;# 
+   433     0292                     CCPR1H          equ	658	;# 
+   434     0293                     CCP1CON         equ	659	;# 
+   435     0294                     CCP1CAP         equ	660	;# 
+   436     0295                     CCPR2           equ	661	;# 
+   437     0295                     CCPR2L          equ	661	;# 
+   438     0296                     CCPR2H          equ	662	;# 
+   439     0297                     CCP2CON         equ	663	;# 
+   440     0298                     CCP2CAP         equ	664	;# 
+   441     030C                     SLRCONA         equ	780	;# 
+   442     030E                     SLRCONC         equ	782	;# 
+   443     038C                     INLVLA          equ	908	;# 
+   444     038E                     INLVLC          equ	910	;# 
+   445     0391                     IOCAP           equ	913	;# 
+   446     0392                     IOCAN           equ	914	;# 
+   447     0393                     IOCAF           equ	915	;# 
+   448     0397                     IOCCP           equ	919	;# 
+   449     0398                     IOCCN           equ	920	;# 
+   450     0399                     IOCCF           equ	921	;# 
+   451     039A                     CLKRCON         equ	922	;# 
+   452     039C                     MDCON           equ	924	;# 
+   453     039D                     MDSRC           equ	925	;# 
+   454     039E                     MDCARH          equ	926	;# 
+   455     039F                     MDCARL          equ	927	;# 
+   456     0498                     NCO1ACC         equ	1176	;# 
+   457     0498                     NCO1ACCL        equ	1176	;# 
+   458     0499                     NCO1ACCH        equ	1177	;# 
+   459     049A                     NCO1ACCU        equ	1178	;# 
+   460     049B                     NCO1INC         equ	1179	;# 
+   461     049B                     NCO1INCL        equ	1179	;# 
+   462     049C                     NCO1INCH        equ	1180	;# 
+   463     049D                     NCO1INCU        equ	1181	;# 
+   464     049E                     NCO1CON         equ	1182	;# 
+   465     049F                     NCO1CLK         equ	1183	;# 
+   466     0617                     PWM5DCL         equ	1559	;# 
+   467     0618                     PWM5DCH         equ	1560	;# 
+   468     0619                     PWM5CON         equ	1561	;# 
+   469     0619                     PWM5CON0        equ	1561	;# 
+   470     061A                     PWM6DCL         equ	1562	;# 
+   471     061B                     PWM6DCH         equ	1563	;# 
+   472     061C                     PWM6CON         equ	1564	;# 
+   473     061C                     PWM6CON0        equ	1564	;# 
+   474     0691                     CWG1CLKCON      equ	1681	;# 
+   475     0692                     CWG1DAT         equ	1682	;# 
+   476     0693                     CWG1DBR         equ	1683	;# 
+   477     0694                     CWG1DBF         equ	1684	;# 
+   478     0695                     CWG1CON0        equ	1685	;# 
+   479     0696                     CWG1CON1        equ	1686	;# 
+   480     0697                     CWG1AS0         equ	1687	;# 
+   481     0698                     CWG1AS1         equ	1688	;# 
+   482     0699                     CWG1STR         equ	1689	;# 
+   483     0891                     NVMADR          equ	2193	;# 
+   484     0891                     EEADR           equ	2193	;# 
+   485     0891                     PMADR           equ	2193	;# 
+   486     0891                     NVMADRL         equ	2193	;# 
+   487     0891                     EEADRL          equ	2193	;# 
+   488     0891                     PMADRL          equ	2193	;# 
+   489     0892                     NVMADRH         equ	2194	;# 
+   490     0892                     EEADRH          equ	2194	;# 
+   491     0892                     PMADRH          equ	2194	;# 
+   492     0893                     NVMDAT          equ	2195	;# 
+   493     0893                     EEDAT           equ	2195	;# 
+   494     0893                     PMDAT           equ	2195	;# 
+   495     0893                     NVMDATL         equ	2195	;# 
+   496     0893                     EEDATL          equ	2195	;# 
+   497     0893                     PMDATL          equ	2195	;# 
+   498     0894                     NVMDATH         equ	2196	;# 
+   499     0894                     EEDATH          equ	2196	;# 
+   500     0894                     PMDATH          equ	2196	;# 
+   501     0895                     NVMCON1         equ	2197	;# 
+   502     0895                     EECON1          equ	2197	;# 
+   503     0895                     PMCON1          equ	2197	;# 
+   504     0896                     NVMCON2         equ	2198	;# 
+   505     0896                     EECON2          equ	2198	;# 
+   506     0896                     PMCON2          equ	2198	;# 
+   507     089B                     PCON0           equ	2203	;# 
+   508     0911                     PMD0            equ	2321	;# 
+   509     0912                     PMD1            equ	2322	;# 
+   510     0913                     PMD2            equ	2323	;# 
+   511     0914                     PMD3            equ	2324	;# 
+   512     0915                     PMD4            equ	2325	;# 
+   513     0916                     PMD5            equ	2326	;# 
+   514     0918                     CPUDOZE         equ	2328	;# 
+   515     0919                     OSCCON1         equ	2329	;# 
+   516     091A                     OSCCON2         equ	2330	;# 
+   517     091B                     OSCCON3         equ	2331	;# 
+   518     091C                     OSCSTAT1        equ	2332	;# 
+   519     091D                     OSCEN           equ	2333	;# 
+   520     091E                     OSCTUNE         equ	2334	;# 
+   521     091F                     OSCFRQ          equ	2335	;# 
+   522     0E0F                     PPSLOCK         equ	3599	;# 
+   523     0E10                     INTPPS          equ	3600	;# 
+   524     0E11                     T0CKIPPS        equ	3601	;# 
+   525     0E12                     T1CKIPPS        equ	3602	;# 
+   526     0E13                     T1GPPS          equ	3603	;# 
+   527     0E14                     CCP1PPS         equ	3604	;# 
+   528     0E15                     CCP2PPS         equ	3605	;# 
+   529     0E18                     CWG1PPS         equ	3608	;# 
+   530     0E1A                     MDCIN1PPS       equ	3610	;# 
+   531     0E1B                     MDCIN2PPS       equ	3611	;# 
+   532     0E1C                     MDMINPPS        equ	3612	;# 
+   533     0E20                     SSP1CLKPPS      equ	3616	;# 
+   534     0E21                     SSP1DATPPS      equ	3617	;# 
+   535     0E22                     SSP1SSPPS       equ	3618	;# 
+   536     0E24                     RXPPS           equ	3620	;# 
+   537     0E25                     TXPPS           equ	3621	;# 
+   538     0E28                     CLCIN0PPS       equ	3624	;# 
+   539     0E29                     CLCIN1PPS       equ	3625	;# 
+   540     0E2A                     CLCIN2PPS       equ	3626	;# 
+   541     0E2B                     CLCIN3PPS       equ	3627	;# 
+   542     0E90                     RA0PPS          equ	3728	;# 
+   543     0E91                     RA1PPS          equ	3729	;# 
+   544     0E92                     RA2PPS          equ	3730	;# 
+   545     0E94                     RA4PPS          equ	3732	;# 
+   546     0E95                     RA5PPS          equ	3733	;# 
+   547     0EA0                     RC0PPS          equ	3744	;# 
+   548     0EA1                     RC1PPS          equ	3745	;# 
+   549     0EA2                     RC2PPS          equ	3746	;# 
+   550     0EA3                     RC3PPS          equ	3747	;# 
+   551     0EA4                     RC4PPS          equ	3748	;# 
+   552     0EA5                     RC5PPS          equ	3749	;# 
+   553     0F0F                     CLCDATA         equ	3855	;# 
+   554     0F10                     CLC1CON         equ	3856	;# 
+   555     0F11                     CLC1POL         equ	3857	;# 
+   556     0F12                     CLC1SEL0        equ	3858	;# 
+   557     0F13                     CLC1SEL1        equ	3859	;# 
+   558     0F14                     CLC1SEL2        equ	3860	;# 
+   559     0F15                     CLC1SEL3        equ	3861	;# 
+   560     0F16                     CLC1GLS0        equ	3862	;# 
+   561     0F17                     CLC1GLS1        equ	3863	;# 
+   562     0F18                     CLC1GLS2        equ	3864	;# 
+   563     0F19                     CLC1GLS3        equ	3865	;# 
+   564     0F1A                     CLC2CON         equ	3866	;# 
+   565     0F1B                     CLC2POL         equ	3867	;# 
+   566     0F1C                     CLC2SEL0        equ	3868	;# 
+   567     0F1D                     CLC2SEL1        equ	3869	;# 
+   568     0F1E                     CLC2SEL2        equ	3870	;# 
+   569     0F1F                     CLC2SEL3        equ	3871	;# 
+   570     0F20                     CLC2GLS0        equ	3872	;# 
+   571     0F21                     CLC2GLS1        equ	3873	;# 
+   572     0F22                     CLC2GLS2        equ	3874	;# 
+   573     0F23                     CLC2GLS3        equ	3875	;# 
+   574     0FE4                     STATUS_SHAD     equ	4068	;# 
+   575     0FE5                     WREG_SHAD       equ	4069	;# 
+   576     0FE6                     BSR_SHAD        equ	4070	;# 
+   577     0FE7                     PCLATH_SHAD     equ	4071	;# 
+   578     0FE8                     FSR0L_SHAD      equ	4072	;# 
+   579     0FE9                     FSR0H_SHAD      equ	4073	;# 
+   580     0FEA                     FSR1L_SHAD      equ	4074	;# 
+   581     0FEB                     FSR1H_SHAD      equ	4075	;# 
+   582     0FED                     STKPTR          equ	4077	;# 
+   583     0FEE                     TOSL            equ	4078	;# 
+   584     0FEF                     TOSH            equ	4079	;# 
+   585     0000                     INDF0           equ	0	;# 
+   586     0001                     INDF1           equ	1	;# 
+   587     0002                     PCL             equ	2	;# 
+   588     0003                     STATUS          equ	3	;# 
+   589     0004                     FSR0L           equ	4	;# 
+   590     0005                     FSR0H           equ	5	;# 
+   591     0006                     FSR1L           equ	6	;# 
+   592     0007                     FSR1H           equ	7	;# 
+   593     0008                     BSR             equ	8	;# 
+   594     0009                     WREG            equ	9	;# 
+   595     000A                     PCLATH          equ	10	;# 
+   596     000B                     INTCON          equ	11	;# 
+   597     000C                     PORTA           equ	12	;# 
+   598     000E                     PORTC           equ	14	;# 
+   599     0010                     PIR0            equ	16	;# 
+   600     0011                     PIR1            equ	17	;# 
+   601     0012                     PIR2            equ	18	;# 
+   602     0013                     PIR3            equ	19	;# 
+   603     0014                     PIR4            equ	20	;# 
+   604     0015                     TMR0L           equ	21	;# 
+   605     0015                     TMR0            equ	21	;# 
+   606     0016                     TMR0H           equ	22	;# 
+   607     0016                     PR0             equ	22	;# 
+   608     0017                     T0CON0          equ	23	;# 
+   609     0018                     T0CON1          equ	24	;# 
+   610     0019                     TMR1            equ	25	;# 
+   611     0019                     TMR1L           equ	25	;# 
+   612     001A                     TMR1H           equ	26	;# 
+   613     001B                     T1CON           equ	27	;# 
+   614     001C                     T1GCON          equ	28	;# 
+   615     001D                     TMR2            equ	29	;# 
+   616     001E                     PR2             equ	30	;# 
+   617     001F                     T2CON           equ	31	;# 
+   618     008C                     TRISA           equ	140	;# 
+   619     008E                     TRISC           equ	142	;# 
+   620     0090                     PIE0            equ	144	;# 
+   621     0091                     PIE1            equ	145	;# 
+   622     0092                     PIE2            equ	146	;# 
+   623     0093                     PIE3            equ	147	;# 
+   624     0094                     PIE4            equ	148	;# 
+   625     0097                     WDTCON          equ	151	;# 
+   626     009B                     ADRES           equ	155	;# 
+   627     009B                     ADRESL          equ	155	;# 
+   628     009C                     ADRESH          equ	156	;# 
+   629     009D                     ADCON0          equ	157	;# 
+   630     009E                     ADCON1          equ	158	;# 
+   631     009F                     ADACT           equ	159	;# 
+   632     010C                     LATA            equ	268	;# 
+   633     010E                     LATC            equ	270	;# 
+   634     0111                     CM1CON0         equ	273	;# 
+   635     0112                     CM1CON1         equ	274	;# 
+   636     0113                     CM2CON0         equ	275	;# 
+   637     0114                     CM2CON1         equ	276	;# 
+   638     0115                     CMOUT           equ	277	;# 
+   639     0116                     BORCON          equ	278	;# 
+   640     0117                     FVRCON          equ	279	;# 
+   641     0118                     DACCON0         equ	280	;# 
+   642     0119                     DACCON1         equ	281	;# 
+   643     018C                     ANSELA          equ	396	;# 
+   644     018E                     ANSELC          equ	398	;# 
+   645     0197                     VREGCON         equ	407	;# 
+   646     0199                     RC1REG          equ	409	;# 
+   647     0199                     RCREG           equ	409	;# 
+   648     0199                     RCREG1          equ	409	;# 
+   649     019A                     TX1REG          equ	410	;# 
+   650     019A                     TXREG1          equ	410	;# 
+   651     019A                     TXREG           equ	410	;# 
+   652     019B                     SP1BRG          equ	411	;# 
+   653     019B                     SPBRG           equ	411	;# 
+   654     019B                     SP1BRGL         equ	411	;# 
+   655     019B                     SPBRG1          equ	411	;# 
+   656     019B                     SPBRGL          equ	411	;# 
+   657     019C                     SP1BRGH         equ	412	;# 
+   658     019C                     SPBRGH          equ	412	;# 
+   659     019C                     SPBRGH1         equ	412	;# 
+   660     019D                     RC1STA          equ	413	;# 
+   661     019D                     RCSTA1          equ	413	;# 
+   662     019D                     RCSTA           equ	413	;# 
+   663     019E                     TX1STA          equ	414	;# 
+   664     019E                     TXSTA1          equ	414	;# 
+   665     019E                     TXSTA           equ	414	;# 
+   666     019F                     BAUD1CON        equ	415	;# 
+   667     019F                     BAUDCON1        equ	415	;# 
+   668     019F                     BAUDCTL1        equ	415	;# 
+   669     019F                     BAUDCON         equ	415	;# 
+   670     019F                     BAUDCTL         equ	415	;# 
+   671     020C                     WPUA            equ	524	;# 
+   672     020E                     WPUC            equ	526	;# 
+   673     0211                     SSP1BUF         equ	529	;# 
+   674     0211                     SSPBUF          equ	529	;# 
+   675     0212                     SSP1ADD         equ	530	;# 
+   676     0212                     SSPADD          equ	530	;# 
+   677     0213                     SSP1MSK         equ	531	;# 
+   678     0213                     SSPMSK          equ	531	;# 
+   679     0214                     SSP1STAT        equ	532	;# 
+   680     0214                     SSPSTAT         equ	532	;# 
+   681     0215                     SSP1CON1        equ	533	;# 
+   682     0215                     SSPCON          equ	533	;# 
+   683     0215                     SSPCON1         equ	533	;# 
+   684     0215                     SSP1CON         equ	533	;# 
+   685     0216                     SSP1CON2        equ	534	;# 
+   686     0216                     SSPCON2         equ	534	;# 
+   687     0217                     SSP1CON3        equ	535	;# 
+   688     0217                     SSPCON3         equ	535	;# 
+   689     028C                     ODCONA          equ	652	;# 
+   690     028E                     ODCONC          equ	654	;# 
+   691     0291                     CCPR1           equ	657	;# 
+   692     0291                     CCPR1L          equ	657	;# 
+   693     0292                     CCPR1H          equ	658	;# 
+   694     0293                     CCP1CON         equ	659	;# 
+   695     0294                     CCP1CAP         equ	660	;# 
+   696     0295                     CCPR2           equ	661	;# 
+   697     0295                     CCPR2L          equ	661	;# 
+   698     0296                     CCPR2H          equ	662	;# 
+   699     0297                     CCP2CON         equ	663	;# 
+   700     0298                     CCP2CAP         equ	664	;# 
+   701     030C                     SLRCONA         equ	780	;# 
+   702     030E                     SLRCONC         equ	782	;# 
+   703     038C                     INLVLA          equ	908	;# 
+   704     038E                     INLVLC          equ	910	;# 
+   705     0391                     IOCAP           equ	913	;# 
+   706     0392                     IOCAN           equ	914	;# 
+   707     0393                     IOCAF           equ	915	;# 
+   708     0397                     IOCCP           equ	919	;# 
+   709     0398                     IOCCN           equ	920	;# 
+   710     0399                     IOCCF           equ	921	;# 
+   711     039A                     CLKRCON         equ	922	;# 
+   712     039C                     MDCON           equ	924	;# 
+   713     039D                     MDSRC           equ	925	;# 
+   714     039E                     MDCARH          equ	926	;# 
+   715     039F                     MDCARL          equ	927	;# 
+   716     0498                     NCO1ACC         equ	1176	;# 
+   717     0498                     NCO1ACCL        equ	1176	;# 
+   718     0499                     NCO1ACCH        equ	1177	;# 
+   719     049A                     NCO1ACCU        equ	1178	;# 
+   720     049B                     NCO1INC         equ	1179	;# 
+   721     049B                     NCO1INCL        equ	1179	;# 
+   722     049C                     NCO1INCH        equ	1180	;# 
+   723     049D                     NCO1INCU        equ	1181	;# 
+   724     049E                     NCO1CON         equ	1182	;# 
+   725     049F                     NCO1CLK         equ	1183	;# 
+   726     0617                     PWM5DCL         equ	1559	;# 
+   727     0618                     PWM5DCH         equ	1560	;# 
+   728     0619                     PWM5CON         equ	1561	;# 
+   729     0619                     PWM5CON0        equ	1561	;# 
+   730     061A                     PWM6DCL         equ	1562	;# 
+   731     061B                     PWM6DCH         equ	1563	;# 
+   732     061C                     PWM6CON         equ	1564	;# 
+   733     061C                     PWM6CON0        equ	1564	;# 
+   734     0691                     CWG1CLKCON      equ	1681	;# 
+   735     0692                     CWG1DAT         equ	1682	;# 
+   736     0693                     CWG1DBR         equ	1683	;# 
+   737     0694                     CWG1DBF         equ	1684	;# 
+   738     0695                     CWG1CON0        equ	1685	;# 
+   739     0696                     CWG1CON1        equ	1686	;# 
+   740     0697                     CWG1AS0         equ	1687	;# 
+   741     0698                     CWG1AS1         equ	1688	;# 
+   742     0699                     CWG1STR         equ	1689	;# 
+   743     0891                     NVMADR          equ	2193	;# 
+   744     0891                     EEADR           equ	2193	;# 
+   745     0891                     PMADR           equ	2193	;# 
+   746     0891                     NVMADRL         equ	2193	;# 
+   747     0891                     EEADRL          equ	2193	;# 
+   748     0891                     PMADRL          equ	2193	;# 
+   749     0892                     NVMADRH         equ	2194	;# 
+   750     0892                     EEADRH          equ	2194	;# 
+   751     0892                     PMADRH          equ	2194	;# 
+   752     0893                     NVMDAT          equ	2195	;# 
+   753     0893                     EEDAT           equ	2195	;# 
+   754     0893                     PMDAT           equ	2195	;# 
+   755     0893                     NVMDATL         equ	2195	;# 
+   756     0893                     EEDATL          equ	2195	;# 
+   757     0893                     PMDATL          equ	2195	;# 
+   758     0894                     NVMDATH         equ	2196	;# 
+   759     0894                     EEDATH          equ	2196	;# 
+   760     0894                     PMDATH          equ	2196	;# 
+   761     0895                     NVMCON1         equ	2197	;# 
+   762     0895                     EECON1          equ	2197	;# 
+   763     0895                     PMCON1          equ	2197	;# 
+   764     0896                     NVMCON2         equ	2198	;# 
+   765     0896                     EECON2          equ	2198	;# 
+   766     0896                     PMCON2          equ	2198	;# 
+   767     089B                     PCON0           equ	2203	;# 
+   768     0911                     PMD0            equ	2321	;# 
+   769     0912                     PMD1            equ	2322	;# 
+   770     0913                     PMD2            equ	2323	;# 
+   771     0914                     PMD3            equ	2324	;# 
+   772     0915                     PMD4            equ	2325	;# 
+   773     0916                     PMD5            equ	2326	;# 
+   774     0918                     CPUDOZE         equ	2328	;# 
+   775     0919                     OSCCON1         equ	2329	;# 
+   776     091A                     OSCCON2         equ	2330	;# 
+   777     091B                     OSCCON3         equ	2331	;# 
+   778     091C                     OSCSTAT1        equ	2332	;# 
+   779     091D                     OSCEN           equ	2333	;# 
+   780     091E                     OSCTUNE         equ	2334	;# 
+   781     091F                     OSCFRQ          equ	2335	;# 
+   782     0E0F                     PPSLOCK         equ	3599	;# 
+   783     0E10                     INTPPS          equ	3600	;# 
+   784     0E11                     T0CKIPPS        equ	3601	;# 
+   785     0E12                     T1CKIPPS        equ	3602	;# 
+   786     0E13                     T1GPPS          equ	3603	;# 
+   787     0E14                     CCP1PPS         equ	3604	;# 
+   788     0E15                     CCP2PPS         equ	3605	;# 
+   789     0E18                     CWG1PPS         equ	3608	;# 
+   790     0E1A                     MDCIN1PPS       equ	3610	;# 
+   791     0E1B                     MDCIN2PPS       equ	3611	;# 
+   792     0E1C                     MDMINPPS        equ	3612	;# 
+   793     0E20                     SSP1CLKPPS      equ	3616	;# 
+   794     0E21                     SSP1DATPPS      equ	3617	;# 
+   795     0E22                     SSP1SSPPS       equ	3618	;# 
+   796     0E24                     RXPPS           equ	3620	;# 
+   797     0E25                     TXPPS           equ	3621	;# 
+   798     0E28                     CLCIN0PPS       equ	3624	;# 
+   799     0E29                     CLCIN1PPS       equ	3625	;# 
+   800     0E2A                     CLCIN2PPS       equ	3626	;# 
+   801     0E2B                     CLCIN3PPS       equ	3627	;# 
+   802     0E90                     RA0PPS          equ	3728	;# 
+   803     0E91                     RA1PPS          equ	3729	;# 
+   804     0E92                     RA2PPS          equ	3730	;# 
+   805     0E94                     RA4PPS          equ	3732	;# 
+   806     0E95                     RA5PPS          equ	3733	;# 
+   807     0EA0                     RC0PPS          equ	3744	;# 
+   808     0EA1                     RC1PPS          equ	3745	;# 
+   809     0EA2                     RC2PPS          equ	3746	;# 
+   810     0EA3                     RC3PPS          equ	3747	;# 
+   811     0EA4                     RC4PPS          equ	3748	;# 
+   812     0EA5                     RC5PPS          equ	3749	;# 
+   813     0F0F                     CLCDATA         equ	3855	;# 
+   814     0F10                     CLC1CON         equ	3856	;# 
+   815     0F11                     CLC1POL         equ	3857	;# 
+   816     0F12                     CLC1SEL0        equ	3858	;# 
+   817     0F13                     CLC1SEL1        equ	3859	;# 
+   818     0F14                     CLC1SEL2        equ	3860	;# 
+   819     0F15                     CLC1SEL3        equ	3861	;# 
+   820     0F16                     CLC1GLS0        equ	3862	;# 
+   821     0F17                     CLC1GLS1        equ	3863	;# 
+   822     0F18                     CLC1GLS2        equ	3864	;# 
+   823     0F19                     CLC1GLS3        equ	3865	;# 
+   824     0F1A                     CLC2CON         equ	3866	;# 
+   825     0F1B                     CLC2POL         equ	3867	;# 
+   826     0F1C                     CLC2SEL0        equ	3868	;# 
+   827     0F1D                     CLC2SEL1        equ	3869	;# 
+   828     0F1E                     CLC2SEL2        equ	3870	;# 
+   829     0F1F                     CLC2SEL3        equ	3871	;# 
+   830     0F20                     CLC2GLS0        equ	3872	;# 
+   831     0F21                     CLC2GLS1        equ	3873	;# 
+   832     0F22                     CLC2GLS2        equ	3874	;# 
+   833     0F23                     CLC2GLS3        equ	3875	;# 
+   834     0FE4                     STATUS_SHAD     equ	4068	;# 
+   835     0FE5                     WREG_SHAD       equ	4069	;# 
+   836     0FE6                     BSR_SHAD        equ	4070	;# 
+   837     0FE7                     PCLATH_SHAD     equ	4071	;# 
+   838     0FE8                     FSR0L_SHAD      equ	4072	;# 
+   839     0FE9                     FSR0H_SHAD      equ	4073	;# 
+   840     0FEA                     FSR1L_SHAD      equ	4074	;# 
+   841     0FEB                     FSR1H_SHAD      equ	4075	;# 
+   842     0FED                     STKPTR          equ	4077	;# 
+   843     0FEE                     TOSL            equ	4078	;# 
+   844     0FEF                     TOSH            equ	4079	;# 
+   845                           
+   846                           	psect	idataCOMMON
+   847     0102                     __pidataCOMMON:
+   848                           
+   849                           ;initializer for _SEND_DATA
+   850     0102  3442               	retlw	66
+   851     000C                     _PORTA          set	12
+   852     0010                     _PIR0bits       set	16
+   853     000C                     _PORTAbits      set	12
+   854     000B                     _INTCON         set	11
+   855     008C                     _TRISAbits      set	140
+   856     0090                     _PIE0           set	144
+   857     008E                     _TRISC          set	142
+   858     010E                     _LATC           set	270
+   859     0872                     _LATC2          set	2162
+   860     019B                     _SPBRG          set	411
+   861     018C                     _ANSELAbits     set	396
+   862     019A                     _TX1REG         set	410
+   863     019F                     _BAUD1CON       set	415
+   864     019D                     _RC1STA         set	413
+   865     019E                     _TX1STA         set	414
+   866     0393                     _IOCAFbits      set	915
+   867     0392                     _IOCANbits      set	914
+   868     0391                     _IOCAPbits      set	913
+   869     0EA5                     _RC5PPS         set	3749
+   870                           
+   871                           	psect	cinit
+   872     00AE                     start_initialization:	
+   873                           ; #config settings
+   874                           
+   875     00AE                     __initialization:
+   876                           
+   877                           ; Initialize objects allocated to COMMON
+   878     00AE  2102               	fcall	__pidataCOMMON	;fetch initializer
+   879     00AF  00FB               	movwf	__pdataCOMMON& (0+127)
+   880                           
+   881                           ; Clear objects allocated to COMMON
+   882     00B0  01F0               	clrf	__pbssCOMMON& (0+127)
+   883     00B1  01F1               	clrf	(__pbssCOMMON+1)& (0+127)
+   884     00B2  01F2               	clrf	(__pbssCOMMON+2)& (0+127)
+   885     00B3  01F3               	clrf	(__pbssCOMMON+3)& (0+127)
+   886     00B4  01F4               	clrf	(__pbssCOMMON+4)& (0+127)
+   887     00B5  01F5               	clrf	(__pbssCOMMON+5)& (0+127)
+   888     00B6  01F6               	clrf	(__pbssCOMMON+6)& (0+127)
+   889     00B7  01F7               	clrf	(__pbssCOMMON+7)& (0+127)
+   890     00B8                     end_of_initialization:	
+   891                           ;End of C runtime variable initialization code
+   892                           
+   893     00B8                     __end_of__initialization:
+   894     00B8  107E               	bcf	int$flags,0	;clear compiler interrupt flag (level 1)
+   895     00B9  0020               	movlb	0
+   896     00BA  28BB               	ljmp	_main	;jump to C main() function
+   897                           
+   898                           	psect	bssCOMMON
+   899     0070                     __pbssCOMMON:
+   900     0070                     _SOFT_I2C_STATUS:
+   901     0070                     	ds	1
+   902     0071                     _SOFT_I2C_FLAG1:
+   903     0071                     	ds	1
+   904     0072                     _SOFT_I2C_FLAG0:
+   905     0072                     	ds	1
+   906     0073                     _SOFT_I2C_BUFF_SR:
+   907     0073                     	ds	1
+   908     0074                     _SOFT_I2C_BUFF_PORT:
+   909     0074                     	ds	1
+   910     0075                     _SOFT_I2C_BUFF:
+   911     0075                     	ds	1
+   912     0076                     _SOFT_I2C_BYTE_COUNT:
+   913     0076                     	ds	1
+   914     0077                     _SOFT_I2C_BIT_COUNT2:
+   915     0077                     	ds	1
+   916                           
+   917                           	psect	dataCOMMON
+   918     007B                     __pdataCOMMON:
+   919     007B                     _SEND_DATA:
+   920     007B                     	ds	1
+   921                           
+   922                           	psect	cstackCOMMON
+   923     0078                     __pcstackCOMMON:
+   924     0078                     ?_SOFT_I2C_INIT:
+   925     0078                     ?_main:	
+   926                           ; 1 bytes @ 0x0
+   927                           
+   928     0078                     ?_INT_SETTNG:	
+   929                           ; 1 bytes @ 0x0
+   930                           
+   931     0078                     ?_SOFT_I2C_INT:	
+   932                           ; 1 bytes @ 0x0
+   933                           
+   934     0078                     ?_SOFTWARE_I2C_INT_PIC:	
+   935                           ; 1 bytes @ 0x0
+   936                           
+   937     0078                     ??_SOFT_I2C_INT:	
+   938                           ; 1 bytes @ 0x0
+   939                           
+   940     0078                     ??_SOFTWARE_I2C_INT_PIC:	
+   941                           ; 1 bytes @ 0x0
+   942                           
+   943                           
+   944                           ; 1 bytes @ 0x0
+   945     0078                     	ds	1
+   946     0079                     ??_SOFT_I2C_INIT:
+   947     0079                     ??_main:	
+   948                           ; 1 bytes @ 0x1
+   949                           
+   950     0079                     ??_INT_SETTNG:	
+   951                           ; 1 bytes @ 0x1
+   952                           
+   953                           
+   954                           ; 1 bytes @ 0x1
+   955     0079                     	ds	2
+   956                           
+   957                           	psect	maintext
+   958     00BB                     __pmaintext:	
+   959 ;;
+   960 ;;Main: autosize = 0, tempsize = 2, incstack = 0, save=0
+   961 ;;
+   962 ;; *************** function _main *****************
+   963 ;; Defined at:
+   964 ;;		line 47 in file "newmain.c"
+   965 ;; Parameters:    Size  Location     Type
+   966 ;;		None
+   967 ;; Auto vars:     Size  Location     Type
+   968 ;;		None
+   969 ;; Return value:  Size  Location     Type
+   970 ;;                  1    wreg      void 
+   971 ;; Registers used:
+   972 ;;		wreg, status,2, status,0, pclath, cstack
+   973 ;; Tracked objects:
+   974 ;;		On entry : B1F/0
+   975 ;;		On exit  : 1F/2
+   976 ;;		Unchanged: 0/0
+   977 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+   978 ;;      Params:         0       0       0       0
+   979 ;;      Locals:         0       0       0       0
+   980 ;;      Temps:          2       0       0       0
+   981 ;;      Totals:         2       0       0       0
+   982 ;;Total ram usage:        2 bytes
+   983 ;; Hardware stack levels required when called: 4
+   984 ;; This function calls:
+   985 ;;		_SOFT_I2C_INIT
+   986 ;; This function is called by:
+   987 ;;		Startup code after reset
+   988 ;; This function uses a non-reentrant model
+   989 ;;
+   990                           
+   991     00BB                     _main:	
+   992                           ;psect for function _main
+   993                           
+   994                           
+   995                           ;newmain.c: 48:     TRISC = 0x00;
+   996                           
+   997                           ;incstack = 0
+   998                           ; Regs used in _main: [wreg+status,2+status,0+pclath+cstack]
+   999     00BB  0021               	movlb	1	; select bank1
+  1000     00BC  018E               	clrf	14	;volatile
+  1001                           
+  1002                           ;newmain.c: 49:     LATC = 0x01;
+  1003     00BD  3001               	movlw	1
+  1004     00BE  0022               	movlb	2	; select bank2
+  1005     00BF  008E               	movwf	14	;volatile
+  1006                           
+  1007                           ;newmain.c: 54:     RC5PPS = 0b10100;
+  1008     00C0  3014               	movlw	20
+  1009     00C1  003D               	movlb	29	; select bank29
+  1010     00C2  00A5               	movwf	37	;volatile
+  1011                           
+  1012                           ;newmain.c: 57:     TX1STA = 0b00100100;
+  1013     00C3  3024               	movlw	36
+  1014     00C4  0023               	movlb	3	; select bank3
+  1015     00C5  009E               	movwf	30	;volatile
+  1016                           
+  1017                           ;newmain.c: 58:     RC1STA = 0b10000000;
+  1018     00C6  3080               	movlw	128
+  1019     00C7  009D               	movwf	29	;volatile
+  1020                           
+  1021                           ;newmain.c: 59:     BAUD1CON = 0b00001000;
+  1022     00C8  3008               	movlw	8
+  1023     00C9  009F               	movwf	31	;volatile
+  1024                           
+  1025                           ;newmain.c: 60:     SPBRG = 31;
+  1026     00CA  3000               	movlw	0
+  1027     00CB  009C               	movwf	28	;volatile
+  1028     00CC  301F               	movlw	31
+  1029     00CD  009B               	movwf	27	;volatile
+  1030                           
+  1031                           ;newmain.c: 62:     TX1REG = 'A';
+  1032     00CE  3041               	movlw	65
+  1033     00CF  009A               	movwf	26	;volatile
+  1034                           
+  1035                           ;newmain.c: 64:     SOFT_I2C_INIT();
+  1036     00D0  20E1               	fcall	_SOFT_I2C_INIT
+  1037     00D1                     l791:
+  1038                           
+  1039                           ;newmain.c: 66:         _delay((unsigned long)((500)*(32000000/4000.0)));
+  1040     00D1  3015               	movlw	21
+  1041     00D2  00FA               	movwf	??_main+1
+  1042     00D3  304B               	movlw	75
+  1043     00D4  00F9               	movwf	??_main
+  1044     00D5  30BE               	movlw	190
+  1045     00D6                     u257:
+  1046     00D6  0B89               	decfsz	9,f
+  1047     00D7  28D6               	goto	u257
+  1048     00D8  0BF9               	decfsz	??_main,f
+  1049     00D9  28D6               	goto	u257
+  1050     00DA  0BFA               	decfsz	??_main+1,f
+  1051     00DB  28D6               	goto	u257
+  1052     00DC  3200               	nop2
+  1053                           
+  1054                           ;newmain.c: 67:         LATC ^= 0x08;
+  1055     00DD  3008               	movlw	8
+  1056     00DE  0022               	movlb	2	; select bank2
+  1057     00DF  068E               	xorwf	14,f	;volatile
+  1058     00E0  28D1               	goto	l791
+  1059     00E1                     __end_of_main:
+  1060                           
+  1061                           	psect	text1
+  1062     00E1                     __ptext1:	
+  1063 ;; *************** function _SOFT_I2C_INIT *****************
+  1064 ;; Defined at:
+  1065 ;;		line 40 in file "SOFT_I2C.c"
+  1066 ;; Parameters:    Size  Location     Type
+  1067 ;;		None
+  1068 ;; Auto vars:     Size  Location     Type
+  1069 ;;		None
+  1070 ;; Return value:  Size  Location     Type
+  1071 ;;                  1    wreg      void 
+  1072 ;; Registers used:
+  1073 ;;		status,2, status,0, pclath, cstack
+  1074 ;; Tracked objects:
+  1075 ;;		On entry : B1F/3
+  1076 ;;		On exit  : B1F/7
+  1077 ;;		Unchanged: B00/0
+  1078 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1079 ;;      Params:         0       0       0       0
+  1080 ;;      Locals:         0       0       0       0
+  1081 ;;      Temps:          0       0       0       0
+  1082 ;;      Totals:         0       0       0       0
+  1083 ;;Total ram usage:        0 bytes
+  1084 ;; Hardware stack levels used: 1
+  1085 ;; Hardware stack levels required when called: 3
+  1086 ;; This function calls:
+  1087 ;;		_INT_SETTNG
+  1088 ;; This function is called by:
+  1089 ;;		_main
+  1090 ;; This function uses a non-reentrant model
+  1091 ;;
+  1092                           
+  1093     00E1                     _SOFT_I2C_INIT:	
+  1094                           ;psect for function _SOFT_I2C_INIT
+  1095                           
+  1096                           
+  1097                           ;SOFT_I2C.c: 42:     TRISAbits.TRISA5 = 1;
+  1098                           
+  1099                           ;incstack = 0
+  1100                           ; Regs used in _SOFT_I2C_INIT: [status,2+status,0+pclath+cstack]
+  1101     00E1  0021               	movlb	1	; select bank1
+  1102     00E2  168C               	bsf	12,5	;volatile
+  1103                           
+  1104                           ;SOFT_I2C.c: 43:     ANSELAbits.ANSA5 = 0;
+  1105     00E3  0023               	movlb	3	; select bank3
+  1106     00E4  128C               	bcf	12,5	;volatile
+  1107                           
+  1108                           ;SOFT_I2C.c: 45:     TRISAbits.TRISA4 = 1;
+  1109     00E5  0021               	movlb	1	; select bank1
+  1110     00E6  160C               	bsf	12,4	;volatile
+  1111                           
+  1112                           ;SOFT_I2C.c: 46:     ANSELAbits.ANSA4 = 0;
+  1113     00E7  0023               	movlb	3	; select bank3
+  1114     00E8  120C               	bcf	12,4	;volatile
+  1115                           
+  1116                           ;SOFT_I2C.c: 48:     PORTAbits.RA5 = 0;
+  1117     00E9  0020               	movlb	0	; select bank0
+  1118     00EA  128C               	bcf	12,5	;volatile
+  1119                           
+  1120                           ;SOFT_I2C.c: 53:     PORTAbits.RA4 = 0;
+  1121     00EB  120C               	bcf	12,4	;volatile
+  1122                           
+  1123                           ;SOFT_I2C.c: 56:     INT_SETTNG();
+  1124     00EC  20FC               	fcall	_INT_SETTNG
+  1125                           
+  1126                           ;SOFT_I2C.c: 60:     IOCAPbits.IOCAP4 = 1;
+  1127     00ED  0027               	movlb	7	; select bank7
+  1128     00EE  1611               	bsf	17,4	;volatile
+  1129                           
+  1130                           ;SOFT_I2C.c: 62:     IOCANbits.IOCAN5 = 1;
+  1131     00EF  1692               	bsf	18,5	;volatile
+  1132                           
+  1133                           ;SOFT_I2C.c: 63:     IOCANbits.IOCAN4 = 1;
+  1134     00F0  1612               	bsf	18,4	;volatile
+  1135     00F1  0008               	return
+  1136     00F2                     __end_of_SOFT_I2C_INIT:
+  1137                           
+  1138                           	psect	text2
+  1139     00FC                     __ptext2:	
+  1140 ;; *************** function _INT_SETTNG *****************
+  1141 ;; Defined at:
+  1142 ;;		line 7 in file "SOFT_I2C.c"
+  1143 ;; Parameters:    Size  Location     Type
+  1144 ;;		None
+  1145 ;; Auto vars:     Size  Location     Type
+  1146 ;;		None
+  1147 ;; Return value:  Size  Location     Type
+  1148 ;;                  1    wreg      void 
+  1149 ;; Registers used:
+  1150 ;;		None
+  1151 ;; Tracked objects:
+  1152 ;;		On entry : B1F/0
+  1153 ;;		On exit  : B1F/1
+  1154 ;;		Unchanged: B00/0
+  1155 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1156 ;;      Params:         0       0       0       0
+  1157 ;;      Locals:         0       0       0       0
+  1158 ;;      Temps:          0       0       0       0
+  1159 ;;      Totals:         0       0       0       0
+  1160 ;;Total ram usage:        0 bytes
+  1161 ;; Hardware stack levels used: 1
+  1162 ;; Hardware stack levels required when called: 2
+  1163 ;; This function calls:
+  1164 ;;		Nothing
+  1165 ;; This function is called by:
+  1166 ;;		_SOFT_I2C_INIT
+  1167 ;; This function uses a non-reentrant model
+  1168 ;;
+  1169                           
+  1170     00FC                     _INT_SETTNG:	
+  1171                           ;psect for function _INT_SETTNG
+  1172                           
+  1173                           
+  1174                           ;SOFT_I2C.c: 8:     INTCON = 0xC0;
+  1175                           
+  1176                           ;incstack = 0
+  1177                           ; Regs used in _INT_SETTNG: []
+  1178     00FC  30C0               	movlw	192
+  1179     00FD  008B               	movwf	11	;volatile
+  1180                           
+  1181                           ;SOFT_I2C.c: 9:     PIE0 = 0x10;
+  1182     00FE  3010               	movlw	16
+  1183     00FF  0021               	movlb	1	; select bank1
+  1184     0100  0090               	movwf	16	;volatile
+  1185     0101  0008               	return
+  1186     0102                     __end_of_INT_SETTNG:
+  1187                           
+  1188                           	psect	intentry
+  1189     0004                     __pintentry:	
+  1190 ;; *************** function _SOFTWARE_I2C_INT_PIC *****************
+  1191 ;; Defined at:
+  1192 ;;		line 76 in file "SOFT_I2C.c"
+  1193 ;; Parameters:    Size  Location     Type
+  1194 ;;		None
+  1195 ;; Auto vars:     Size  Location     Type
+  1196 ;;		None
+  1197 ;; Return value:  Size  Location     Type
+  1198 ;;                  1    wreg      void 
+  1199 ;; Registers used:
+  1200 ;;		wreg, status,2, status,0, pclath, cstack
+  1201 ;; Tracked objects:
+  1202 ;;		On entry : 0/0
+  1203 ;;		On exit  : 18/0
+  1204 ;;		Unchanged: 0/0
+  1205 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1206 ;;      Params:         0       0       0       0
+  1207 ;;      Locals:         0       0       0       0
+  1208 ;;      Temps:          1       0       0       0
+  1209 ;;      Totals:         1       0       0       0
+  1210 ;;Total ram usage:        1 bytes
+  1211 ;; Hardware stack levels used: 1
+  1212 ;; Hardware stack levels required when called: 1
+  1213 ;; This function calls:
+  1214 ;;		_SOFT_I2C_INT
+  1215 ;; This function is called by:
+  1216 ;;		Interrupt level 1
+  1217 ;; This function uses a non-reentrant model
+  1218 ;;
+  1219                           
+  1220     0004                     _SOFTWARE_I2C_INT_PIC:
+  1221                           
+  1222                           ;incstack = 0
+  1223     0004  147E               	bsf	126,0	;set compiler interrupt flag (level 1)
+  1224                           
+  1225                           ; Regs used in _SOFTWARE_I2C_INT_PIC: [wreg+status,2+status,0+pclath+cstack]
+  1226     0005  3180               	pagesel	$
+  1227                           
+  1228                           ;SOFT_I2C.c: 77:     if(PIR0bits.IOCIF){
+  1229     0006  0020               	movlb	0	; select bank0
+  1230     0007  1E10               	btfss	16,4	;volatile
+  1231     0008  28AB               	goto	i1l145
+  1232                           
+  1233                           ;SOFT_I2C.c: 79:         SOFT_I2C_BUFF_PORT = PORTA;
+  1234     0009  080C               	movf	12,w	;volatile
+  1235     000A  00F4               	movwf	_SOFT_I2C_BUFF_PORT
+  1236                           
+  1237                           ;SOFT_I2C.c: 80:         if (IOCAFbits.IOCAF4){
+  1238     000B  0027               	movlb	7	; select bank7
+  1239     000C  1E13               	btfss	19,4	;volatile
+  1240     000D  289F               	goto	i1l107
+  1241                           
+  1242                           ;SOFT_I2C.c: 81:             IOCAFbits.IOCAF4 = 0;
+  1243     000E  1213               	bcf	19,4	;volatile
+  1244                           
+  1245                           ;SOFT_I2C.c: 82:             if (SOFT_I2C_FLAG0 & 0x40){
+  1246     000F  1F72               	btfss	_SOFT_I2C_FLAG0,6
+  1247     0010  28A9               	goto	i1l905
+  1248                           
+  1249                           ;SOFT_I2C.c: 83:                 if(PORTAbits.RA4 == 1){
+  1250     0011  0020               	movlb	0	; select bank0
+  1251     0012  1E0C               	btfss	12,4	;volatile
+  1252     0013  2858               	goto	i1l109
+  1253                           
+  1254                           ;SOFT_I2C.c: 84:                     if ((SOFT_I2C_FLAG0 & 0x04) == 0){
+  1255     0014  1972               	btfsc	_SOFT_I2C_FLAG0,2
+  1256     0015  2848               	goto	i1l110
+  1257                           
+  1258                           ;SOFT_I2C.c: 85:                         if (SOFT_I2C_BUFF_PORT & 0x20) {
+  1259     0016  1EF4               	btfss	_SOFT_I2C_BUFF_PORT,5
+  1260     0017  281A               	goto	i1l111
+  1261                           
+  1262                           ;SOFT_I2C.c: 86:                             SOFT_I2C_BUFF_SR |= SOFT_I2C_BIT_COUNT2;
+  1263     0018  0877               	movf	_SOFT_I2C_BIT_COUNT2,w
+  1264     0019  04F3               	iorwf	_SOFT_I2C_BUFF_SR,f
+  1265     001A                     i1l111:	
+  1266                           ;SOFT_I2C.c: 87:                         }
+  1267                           
+  1268                           
+  1269                           ;SOFT_I2C.c: 88:                         if (SOFT_I2C_BIT_COUNT2 == 1){
+  1270     001A  0377               	decf	_SOFT_I2C_BIT_COUNT2,w
+  1271     001B  1D03               	btfss	3,2
+  1272     001C  289C               	goto	L1
+  1273                           
+  1274                           ;SOFT_I2C.c: 89:                             TX1REG = SOFT_I2C_BUFF_SR;
+  1275     001D  0873               	movf	_SOFT_I2C_BUFF_SR,w
+  1276     001E  0023               	movlb	3	; select bank3
+  1277     001F  009A               	movwf	26	;volatile
+  1278                           
+  1279                           ;SOFT_I2C.c: 90:                             if ((SOFT_I2C_FLAG0 & 0x20) == 0){
+  1280     0020  1AF2               	btfsc	_SOFT_I2C_FLAG0,5
+  1281     0021  2839               	goto	i1l122
+  1282                           
+  1283                           ;SOFT_I2C.c: 92:                                 if ((SOFT_I2C_BUFF_SR & 0xFE) != 0x10) 
+      +                          {
+  1284     0022  30FE               	movlw	254
+  1285     0023  0573               	andwf	_SOFT_I2C_BUFF_SR,w
+  1286     0024  00F8               	movwf	??_SOFTWARE_I2C_INT_PIC
+  1287     0025  3010               	movlw	16
+  1288     0026  0678               	xorwf	??_SOFTWARE_I2C_INT_PIC,w
+  1289     0027  1903               	btfsc	3,2
+  1290     0028  282C               	goto	i1l116
+  1291                           
+  1292                           ;SOFT_I2C.c: 93:                                     SOFT_I2C_FLAG0 &= ~0x40;
+  1293     0029  30BF               	movlw	191
+  1294     002A  05F2               	andwf	_SOFT_I2C_FLAG0,f
+  1295                           
+  1296                           ;SOFT_I2C.c: 94:                                 }
+  1297     002B  2837               	goto	i1l115
+  1298     002C                     i1l116:
+  1299     002C  0020               	movlb	0	; select bank0
+  1300     002D  1A0C               	btfsc	12,4	;volatile
+  1301     002E  282C               	goto	i1l116
+  1302                           
+  1303                           ;SOFT_I2C.c: 97:                                     TRISAbits.TRISA5 = 0; PORTAbits.RA5
+      +                           = 0; IOCANbits.IOCAN5 = 0;
+  1304     002F  0021               	movlb	1	; select bank1
+  1305     0030  128C               	bcf	12,5	;volatile
+  1306     0031  0020               	movlb	0	; select bank0
+  1307     0032  128C               	bcf	12,5	;volatile
+  1308     0033  0027               	movlb	7	; select bank7
+  1309     0034  1292               	bcf	18,5	;volatile
+  1310                           
+  1311                           ;SOFT_I2C.c: 99:                                     if (SOFT_I2C_BUFF_SR & 0x01){
+  1312     0035  1873               	btfsc	_SOFT_I2C_BUFF_SR,0
+  1313                           
+  1314                           ;SOFT_I2C.c: 100:                                         SOFT_I2C_FLAG0 |= 0x04;
+  1315     0036  1572               	bsf	_SOFT_I2C_FLAG0,2
+  1316     0037                     i1l115:	
+  1317                           ;SOFT_I2C.c: 105:                                 }
+  1318                           
+  1319                           
+  1320                           ;SOFT_I2C.c: 106:                                 SOFT_I2C_FLAG0 |= 0x20;
+  1321     0037  16F2               	bsf	_SOFT_I2C_FLAG0,5
+  1322                           
+  1323                           ;SOFT_I2C.c: 107:                             }
+  1324     0038  2844               	goto	i1l823
+  1325     0039                     i1l122:
+  1326     0039  0020               	movlb	0	; select bank0
+  1327     003A  1A0C               	btfsc	12,4	;volatile
+  1328     003B  2839               	goto	i1l122
+  1329                           
+  1330                           ;SOFT_I2C.c: 110:                                 TRISAbits.TRISA5 = 0; PORTAbits.RA5 = 
+      +                          0; IOCANbits.IOCAN5 = 0;
+  1331     003C  0021               	movlb	1	; select bank1
+  1332     003D  128C               	bcf	12,5	;volatile
+  1333     003E  0020               	movlb	0	; select bank0
+  1334     003F  128C               	bcf	12,5	;volatile
+  1335     0040  0027               	movlb	7	; select bank7
+  1336     0041  1292               	bcf	18,5	;volatile
+  1337                           
+  1338                           ;SOFT_I2C.c: 111:                                 SOFT_I2C_BUFF = SOFT_I2C_BUFF_SR;
+  1339     0042  0873               	movf	_SOFT_I2C_BUFF_SR,w
+  1340     0043  00F5               	movwf	_SOFT_I2C_BUFF
+  1341     0044                     i1l823:
+  1342                           
+  1343                           ;SOFT_I2C.c: 113:                             IOCAPbits.IOCAP4 = 0;
+  1344     0044  0027               	movlb	7	; select bank7
+  1345     0045  1211               	bcf	17,4	;volatile
+  1346                           
+  1347                           ;SOFT_I2C.c: 114:                             IOCANbits.IOCAN4 = 1;
+  1348     0046  1612               	bsf	18,4	;volatile
+  1349                           
+  1350                           ;SOFT_I2C.c: 116:                         }
+  1351     0047  289C               	goto	L1
+  1352     0048                     i1l110:	
+  1353                           ;SOFT_I2C.c: 119:                     else {
+  1354                           
+  1355                           ;SOFT_I2C.c: 118:                     }
+  1356                           
+  1357                           ;SOFT_I2C.c: 117:                         SOFT_I2C_BIT_COUNT2 >>= 1;
+  1358                           
+  1359                           
+  1360                           ;SOFT_I2C.c: 120:                         if (SOFT_I2C_BUFF_PORT & 0x20){
+  1361     0048  1EF4               	btfss	_SOFT_I2C_BUFF_PORT,5
+  1362     0049  284D               	goto	i1l829
+  1363                           
+  1364                           ;SOFT_I2C.c: 122:                             SOFT_I2C_FLAG0 &= ~(0x04 | 0x01);
+  1365     004A  30FA               	movlw	250
+  1366     004B  05F2               	andwf	_SOFT_I2C_FLAG0,f
+  1367                           
+  1368                           ;SOFT_I2C.c: 123:                         }
+  1369     004C  2854               	goto	i1l837
+  1370     004D                     i1l829:
+  1371                           
+  1372                           ;SOFT_I2C.c: 128:                             SOFT_I2C_BUFF_SR = SEND_DATA;
+  1373     004D  087B               	movf	_SEND_DATA,w
+  1374     004E  00F3               	movwf	_SOFT_I2C_BUFF_SR
+  1375                           
+  1376                           ;SOFT_I2C.c: 130:                             SOFT_I2C_BIT_COUNT2 = 0x80;
+  1377     004F  3080               	movlw	128
+  1378     0050  00F7               	movwf	_SOFT_I2C_BIT_COUNT2
+  1379                           
+  1380                           ;SOFT_I2C.c: 131:                             SOFT_I2C_FLAG0 |= 0x01;
+  1381     0051  1472               	bsf	_SOFT_I2C_FLAG0,0
+  1382                           
+  1383                           ;SOFT_I2C.c: 132:                             SOFT_I2C_BYTE_COUNT ++;
+  1384     0052  3001               	movlw	1
+  1385     0053  07F6               	addwf	_SOFT_I2C_BYTE_COUNT,f
+  1386     0054                     i1l837:
+  1387                           
+  1388                           ;SOFT_I2C.c: 134:                         IOCAPbits.IOCAP4 = 0;
+  1389     0054  0027               	movlb	7	; select bank7
+  1390     0055  1211               	bcf	17,4	;volatile
+  1391                           
+  1392                           ;SOFT_I2C.c: 135:                         IOCANbits.IOCAN4 = 1;
+  1393     0056  1612               	bsf	18,4	;volatile
+  1394     0057  28A9               	goto	i1l905
+  1395     0058                     i1l109:	
+  1396                           ;SOFT_I2C.c: 138:                 else{
+  1397                           
+  1398                           
+  1399                           ;SOFT_I2C.c: 139:                     if (SOFT_I2C_FLAG0 & 0x01) goto WRITE;
+  1400     0058  1872               	btfsc	_SOFT_I2C_FLAG0,0
+  1401     0059  2883               	goto	i1l889
+  1402                           
+  1403                           ;SOFT_I2C.c: 140:                     else if (SOFT_I2C_FLAG0 & 0x08){
+  1404     005A  1DF2               	btfss	_SOFT_I2C_FLAG0,3
+  1405     005B  2865               	goto	i1l859
+  1406                           
+  1407                           ;SOFT_I2C.c: 141:                         SOFT_I2C_BUFF_SR = 0x00;
+  1408     005C  01F3               	clrf	_SOFT_I2C_BUFF_SR
+  1409                           
+  1410                           ;SOFT_I2C.c: 142:                         SOFT_I2C_FLAG0 &= ~(0x08 | 0x20 | 0x04);
+  1411     005D  30D3               	movlw	211
+  1412     005E  05F2               	andwf	_SOFT_I2C_FLAG0,f
+  1413                           
+  1414                           ;SOFT_I2C.c: 143:                         SOFT_I2C_STATUS = SOFT_I2C_FLAG0;
+  1415     005F  0872               	movf	_SOFT_I2C_FLAG0,w
+  1416     0060  00F0               	movwf	_SOFT_I2C_STATUS
+  1417                           
+  1418                           ;SOFT_I2C.c: 144:                         SOFT_I2C_BIT_COUNT2 = 0x80;
+  1419     0061  3080               	movlw	128
+  1420     0062  00F7               	movwf	_SOFT_I2C_BIT_COUNT2
+  1421                           
+  1422                           ;SOFT_I2C.c: 145:                         SOFT_I2C_BYTE_COUNT = 0;
+  1423     0063  01F6               	clrf	_SOFT_I2C_BYTE_COUNT
+  1424     0064  287E               	goto	L2
+  1425     0065                     i1l859:	
+  1426                           ;SOFT_I2C.c: 148:                     }
+  1427                           
+  1428                           ;SOFT_I2C.c: 147:                         IOCAPbits.IOCAP4 = 1;
+  1429                           
+  1430                           ;SOFT_I2C.c: 146:                         IOCANbits.IOCAN4 = 0;
+  1431                           
+  1432     0065  0877               	movf	_SOFT_I2C_BIT_COUNT2,w
+  1433     0066  1D03               	btfss	3,2
+  1434     0067  2881               	goto	i1l887
+  1435                           
+  1436                           ;SOFT_I2C.c: 151:                         TRISAbits.TRISA5 = 1; IOCANbits.IOCAN5 = 1;
+  1437     0068  0021               	movlb	1	; select bank1
+  1438     0069  168C               	bsf	12,5	;volatile
+  1439     006A  0027               	movlb	7	; select bank7
+  1440     006B  1692               	bsf	18,5	;volatile
+  1441                           
+  1442                           ;SOFT_I2C.c: 154:                         SOFT_I2C_INT();
+  1443     006C  20F2               	fcall	_SOFT_I2C_INT
+  1444                           
+  1445                           ;SOFT_I2C.c: 155:                         SOFT_I2C_STATUS = SOFT_I2C_FLAG0;
+  1446     006D  0872               	movf	_SOFT_I2C_FLAG0,w
+  1447     006E  00F0               	movwf	_SOFT_I2C_STATUS
+  1448                           
+  1449                           ;SOFT_I2C.c: 156:                         if (SOFT_I2C_FLAG0 & 0x04){
+  1450     006F  1D72               	btfss	_SOFT_I2C_FLAG0,2
+  1451     0070  2879               	goto	i1l877
+  1452                           
+  1453                           ;SOFT_I2C.c: 159:                             SOFT_I2C_BUFF_SR = SEND_DATA;
+  1454     0071  087B               	movf	_SEND_DATA,w
+  1455     0072  00F3               	movwf	_SOFT_I2C_BUFF_SR
+  1456                           
+  1457                           ;SOFT_I2C.c: 161:                             SOFT_I2C_BIT_COUNT2 = 0x80;
+  1458     0073  3080               	movlw	128
+  1459     0074  00F7               	movwf	_SOFT_I2C_BIT_COUNT2
+  1460                           
+  1461                           ;SOFT_I2C.c: 162:                             SOFT_I2C_FLAG0 |= 0x01;
+  1462     0075  1472               	bsf	_SOFT_I2C_FLAG0,0
+  1463                           
+  1464                           ;SOFT_I2C.c: 163:                             SOFT_I2C_BYTE_COUNT ++;
+  1465     0076  3001               	movlw	1
+  1466     0077  07F6               	addwf	_SOFT_I2C_BYTE_COUNT,f
+  1467                           
+  1468                           ;SOFT_I2C.c: 164:                         }
+  1469     0078  2881               	goto	i1l887
+  1470     0079                     i1l877:
+  1471                           
+  1472                           ;SOFT_I2C.c: 167:                             SOFT_I2C_BUFF_SR = 0;
+  1473     0079  01F3               	clrf	_SOFT_I2C_BUFF_SR
+  1474                           
+  1475                           ;SOFT_I2C.c: 168:                             SOFT_I2C_BIT_COUNT2 = 0x80;
+  1476     007A  3080               	movlw	128
+  1477     007B  00F7               	movwf	_SOFT_I2C_BIT_COUNT2
+  1478                           
+  1479                           ;SOFT_I2C.c: 169:                             SOFT_I2C_BYTE_COUNT ++;
+  1480     007C  3001               	movlw	1
+  1481     007D  07F6               	addwf	_SOFT_I2C_BYTE_COUNT,f
+  1482     007E                     L2:
+  1483                           
+  1484                           ;SOFT_I2C.c: 170:                             IOCANbits.IOCAN4 = 0;
+  1485     007E  0027               	movlb	7	; select bank7
+  1486     007F  1212               	bcf	18,4	;volatile
+  1487                           
+  1488                           ;SOFT_I2C.c: 171:                             IOCAPbits.IOCAP4 = 1;
+  1489     0080  1611               	bsf	17,4	;volatile
+  1490     0081                     i1l887:
+  1491                           
+  1492                           ;SOFT_I2C.c: 175:                     if (SOFT_I2C_FLAG0 & 0x04){
+  1493     0081  1D72               	btfss	_SOFT_I2C_FLAG0,2
+  1494     0082  28A9               	goto	i1l905
+  1495     0083                     i1l889:
+  1496                           
+  1497                           ;SOFT_I2C.c: 177:                         if (SOFT_I2C_BIT_COUNT2 == 0){
+  1498     0083  0877               	movf	_SOFT_I2C_BIT_COUNT2,w
+  1499     0084  1D03               	btfss	3,2
+  1500     0085  288D               	goto	i1l138
+  1501                           
+  1502                           ;SOFT_I2C.c: 178:                             TRISAbits.TRISA5 = 1; IOCANbits.IOCAN5 = 1
+      +                          ;
+  1503     0086  0021               	movlb	1	; select bank1
+  1504     0087  168C               	bsf	12,5	;volatile
+  1505     0088  0027               	movlb	7	; select bank7
+  1506     0089  1692               	bsf	18,5	;volatile
+  1507                           
+  1508                           ;SOFT_I2C.c: 180:                             IOCANbits.IOCAN4 = 0;
+  1509     008A  1212               	bcf	18,4	;volatile
+  1510                           
+  1511                           ;SOFT_I2C.c: 181:                             IOCAPbits.IOCAP4 = 1;
+  1512     008B  1611               	bsf	17,4	;volatile
+  1513                           
+  1514                           ;SOFT_I2C.c: 182:                         }
+  1515     008C  289A               	goto	i1l895
+  1516     008D                     i1l138:	
+  1517                           ;SOFT_I2C.c: 183:                         else {
+  1518                           
+  1519                           
+  1520                           ;SOFT_I2C.c: 184:                             if (SOFT_I2C_BUFF_SR & 0x80){
+  1521     008D  1FF3               	btfss	_SOFT_I2C_BUFF_SR,7
+  1522     008E  2894               	goto	i1l140
+  1523                           
+  1524                           ;SOFT_I2C.c: 185:                                 TRISAbits.TRISA5 = 1; IOCANbits.IOCAN5
+      +                           = 1;
+  1525     008F  0021               	movlb	1	; select bank1
+  1526     0090  168C               	bsf	12,5	;volatile
+  1527     0091  0027               	movlb	7	; select bank7
+  1528     0092  1692               	bsf	18,5	;volatile
+  1529                           
+  1530                           ;SOFT_I2C.c: 186:                             }
+  1531     0093  289A               	goto	i1l895
+  1532     0094                     i1l140:	
+  1533                           ;SOFT_I2C.c: 187:                             else {
+  1534                           
+  1535                           
+  1536                           ;SOFT_I2C.c: 188:                                 TRISAbits.TRISA5 = 0; PORTAbits.RA5 = 
+      +                          0; IOCANbits.IOCAN5 = 0;
+  1537     0094  0021               	movlb	1	; select bank1
+  1538     0095  128C               	bcf	12,5	;volatile
+  1539     0096  0020               	movlb	0	; select bank0
+  1540     0097  128C               	bcf	12,5	;volatile
+  1541     0098  0027               	movlb	7	; select bank7
+  1542     0099  1292               	bcf	18,5	;volatile
+  1543     009A                     i1l895:
+  1544                           
+  1545                           ;SOFT_I2C.c: 191:                         SOFT_I2C_BUFF_SR <<= 1;
+  1546     009A  1003               	clrc
+  1547     009B  0DF3               	rlf	_SOFT_I2C_BUFF_SR,f
+  1548     009C                     L1:
+  1549                           
+  1550                           ;SOFT_I2C.c: 192:                         SOFT_I2C_BIT_COUNT2 >>= 1;
+  1551     009C  1003               	clrc
+  1552     009D  0CF7               	rrf	_SOFT_I2C_BIT_COUNT2,f
+  1553                           
+  1554                           ;SOFT_I2C.c: 196:         }
+  1555                           
+  1556                           ;SOFT_I2C.c: 195:             }
+  1557     009E  28A9               	goto	i1l905
+  1558     009F                     i1l107:	
+  1559                           ;SOFT_I2C.c: 198:         else if (IOCAFbits.IOCAF5){
+  1560                           
+  1561     009F  1E93               	btfss	19,5	;volatile
+  1562     00A0  28A9               	goto	i1l905
+  1563                           
+  1564                           ;SOFT_I2C.c: 199:             if(PORTAbits.RA4 == 1){
+  1565     00A1  0020               	movlb	0	; select bank0
+  1566     00A2  1E0C               	btfss	12,4	;volatile
+  1567     00A3  28A9               	goto	i1l905
+  1568                           
+  1569                           ;SOFT_I2C.c: 201:                 SOFT_I2C_FLAG0 |= 0x08 | 0x40;
+  1570     00A4  3048               	movlw	72
+  1571     00A5  04F2               	iorwf	_SOFT_I2C_FLAG0,f
+  1572                           
+  1573                           ;SOFT_I2C.c: 203:                 IOCANbits.IOCAN4 = 1;
+  1574     00A6  0027               	movlb	7	; select bank7
+  1575     00A7  1612               	bsf	18,4	;volatile
+  1576                           
+  1577                           ;SOFT_I2C.c: 204:                 IOCAPbits.IOCAP4 = 1;
+  1578     00A8  1611               	bsf	17,4	;volatile
+  1579     00A9                     i1l905:
+  1580                           
+  1581                           ;SOFT_I2C.c: 207:         IOCAFbits.IOCAF5 = 0;
+  1582     00A9  0027               	movlb	7	; select bank7
+  1583     00AA  1293               	bcf	19,5	;volatile
+  1584     00AB                     i1l145:
+  1585     00AB  107E               	bcf	126,0	;clear compiler interrupt flag (level 1)
+  1586     00AC  0009               	retfie
+  1587     00AD                     __end_of_SOFTWARE_I2C_INT_PIC:
+  1588                           
+  1589                           	psect	text4
+  1590     00F2                     __ptext4:	
+  1591 ;; *************** function _SOFT_I2C_INT *****************
+  1592 ;; Defined at:
+  1593 ;;		line 13 in file "SOFT_I2C.c"
+  1594 ;; Parameters:    Size  Location     Type
+  1595 ;;		None
+  1596 ;; Auto vars:     Size  Location     Type
+  1597 ;;		None
+  1598 ;; Return value:  Size  Location     Type
+  1599 ;;                  1    wreg      void 
+  1600 ;; Registers used:
+  1601 ;;		None
+  1602 ;; Tracked objects:
+  1603 ;;		On entry : 1F/7
+  1604 ;;		On exit  : 1A/2
+  1605 ;;		Unchanged: 0/0
+  1606 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2
+  1607 ;;      Params:         0       0       0       0
+  1608 ;;      Locals:         0       0       0       0
+  1609 ;;      Temps:          0       0       0       0
+  1610 ;;      Totals:         0       0       0       0
+  1611 ;;Total ram usage:        0 bytes
+  1612 ;; Hardware stack levels used: 1
+  1613 ;; This function calls:
+  1614 ;;		Nothing
+  1615 ;; This function is called by:
+  1616 ;;		_SOFTWARE_I2C_INT_PIC
+  1617 ;; This function uses a non-reentrant model
+  1618 ;;
+  1619                           
+  1620     00F2                     _SOFT_I2C_INT:	
+  1621                           ;psect for function _SOFT_I2C_INT
+  1622                           
+  1623                           
+  1624                           ;SOFT_I2C.c: 14:     if (SOFT_I2C_STATUS & 0x20){
+  1625                           
+  1626                           ;incstack = 0
+  1627                           ; Regs used in _SOFT_I2C_INT: []
+  1628     00F2  1EF0               	btfss	_SOFT_I2C_STATUS,5
+  1629     00F3  0008               	return
+  1630                           
+  1631                           ;SOFT_I2C.c: 15:         if (SOFT_I2C_BUFF & 0x01){
+  1632     00F4  1C75               	btfss	_SOFT_I2C_BUFF,0
+  1633     00F5  28F9               	goto	i1l91
+  1634                           
+  1635                           ;SOFT_I2C.c: 16:             LATC2 = 1;
+  1636     00F6  0022               	movlb	2	; select bank2
+  1637     00F7  150E               	bsf	14,2	;volatile
+  1638                           
+  1639                           ;SOFT_I2C.c: 17:         }
+  1640     00F8  0008               	return
+  1641     00F9                     i1l91:	
+  1642                           ;SOFT_I2C.c: 18:         else {
+  1643                           
+  1644                           
+  1645                           ;SOFT_I2C.c: 19:             LATC2 = 0;
+  1646     00F9  0022               	movlb	2	; select bank2
+  1647     00FA  110E               	bcf	14,2	;volatile
+  1648     00FB  0008               	return
+  1649     00FC                     __end_of_SOFT_I2C_INT:
+  1650     0000                     ___latbits      equ	0
+  1651     007E                     btemp           set	126	;btemp
+  1652     007E                     int$flags       set	126
+  1653     007E                     wtemp0          set	126
+  1654                           
+  1655                           	psect	config
+  1656                           
+  1657                           ;Config register CONFIG1 @ 0x8007
+  1658                           ;	FEXTOSC External Oscillator mode Selection bits
+  1659                           ;	FEXTOSC = OFF, Oscillator not enabled
+  1660                           ;	Power-up default value for COSC bits
+  1661                           ;	RSTOSC = HFINT32, HFINTOSC with 2x PLL (32MHz)
+  1662                           ;	Clock Out Enable bit
+  1663                           ;	CLKOUTEN = OFF, CLKOUT function is disabled; I/O or oscillator function on OSC2
+  1664                           ;	Clock Switch Enable bit
+  1665                           ;	CSWEN = OFF, The NOSC and NDIV bits cannot be changed by user software
+  1666                           ;	Fail-Safe Clock Monitor Enable
+  1667                           ;	FCMEN = OFF, Fail-Safe Clock Monitor is disabled
+  1668     8007                     	org	32775
+  1669     8007  178C               	dw	6028
+  1670                           
+  1671                           ;Config register CONFIG2 @ 0x8008
+  1672                           ;	Master Clear Enable bit
+  1673                           ;	MCLRE = OFF, MCLR/VPP pin function is digital input; MCLR internally disabled; Weak pu
+      +                          ll-up under control of port pin's WPU control bit.
+  1674                           ;	Power-up Timer Enable bit
+  1675                           ;	PWRTE = ON, PWRT enabled
+  1676                           ;	Watchdog Timer Enable bits
+  1677                           ;	WDTE = OFF, WDT disabled; SWDTEN is ignored
+  1678                           ;	Low-power BOR enable bit
+  1679                           ;	LPBOREN = OFF, ULPBOR disabled
+  1680                           ;	Brown-out Reset Enable bits
+  1681                           ;	BOREN = OFF, Brown-out Reset disabled
+  1682                           ;	Brown-out Reset Voltage selection bit
+  1683                           ;	BORV = LOW, Brown-out voltage (Vbor) set to 2.45V
+  1684                           ;	PPSLOCK bit One-Way Set Enable bit
+  1685                           ;	PPS1WAY = ON, The PPSLOCK bit can be cleared and set only once; PPS registers remain l
+      +                          ocked after one clear/set cycle
+  1686                           ;	Stack Overflow/Underflow Reset Enable bit
+  1687                           ;	STVREN = ON, Stack Overflow or Underflow will cause a Reset
+  1688                           ;	Debugger enable bit
+  1689                           ;	DEBUG = OFF, Background debugger disabled
+  1690     8008                     	org	32776
+  1691     8008  3F30               	dw	16176
+  1692                           
+  1693                           ;Config register CONFIG3 @ 0x8009
+  1694                           ;	User NVM self-write protection bits
+  1695                           ;	WRT = OFF, Write protection off
+  1696                           ;	Low Voltage Programming Enable bit
+  1697                           ;	LVP = ON, Low Voltage programming enabled. MCLR/VPP pin function is MCLR. MCLRE config
+      +                          uration bit is ignored.
+  1698     8009                     	org	32777
+  1699     8009  3FFF               	dw	16383
+  1700                           
+  1701                           ;Config register CONFIG4 @ 0x800A
+  1702                           ;	User NVM Program Memory Code Protection bit
+  1703                           ;	CP = OFF, User NVM code protection disabled
+  1704                           ;	Data NVM Memory Code Protection bit
+  1705                           ;	CPD = OFF, Data NVM code protection disabled
+  1706     800A                     	org	32778
+  1707     800A  3FFF               	dw	16383
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        1
+    BSS         8
+    Persistent  32
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMMON           14      3      12
+    BANK0            80      0       0
+    BANK1            80      0       0
+    BANK2            80      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMMON
+
+    None.
+
+Critical Paths under _SOFTWARE_I2C_INT_PIC in COMMON
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _SOFTWARE_I2C_INT_PIC in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _SOFTWARE_I2C_INT_PIC in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _SOFTWARE_I2C_INT_PIC in BANK2
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 2     2      0       0
+                                              1 COMMON     2     2      0
+                      _SOFT_I2C_INIT
+ ---------------------------------------------------------------------------------
+ (1) _SOFT_I2C_INIT                                        0     0      0       0
+                         _INT_SETTNG
+ ---------------------------------------------------------------------------------
+ (2) _INT_SETTNG                                           0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 2
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (3) _SOFTWARE_I2C_INT_PIC                                 1     1      0       0
+                                              0 COMMON     1     1      0
+                       _SOFT_I2C_INT
+ ---------------------------------------------------------------------------------
+ (4) _SOFT_I2C_INT                                         0     0      0       0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 4
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _SOFT_I2C_INIT
+     _INT_SETTNG
+
+ _SOFTWARE_I2C_INT_PIC (ROOT)
+   _SOFT_I2C_INT
+
+Address spaces:
+Name               Size   Autos  Total    Usage
+BITCOMMON           14      0       0      0.0%
+BITBANK0            80      0       0      0.0%
+BITBANK1            80      0       0      0.0%
+BITBANK2            80      0       0      0.0%
+BIGRAM             240      0       0      0.0%
+COMMON              14      3      12     85.7%
+BANK0               80      0       0      0.0%
+BANK1               80      0       0      0.0%
+BANK2               80      0       0      0.0%
+STACK                0      0       0      0.0%
+DATA                 0      0      12      0.0%
+
+
+Microchip Technology PIC Macro Assembler V2.50 build 20240725155939 
+Symbol Table                                                                                   Sat Oct 26 20:51:19 2024
+
+                         l791 00D1                           u257 00D6                           wreg 0009  
+                        _LATC 010E                          _PIE0 0090                          i1l91 00F9  
+                 ?_INT_SETTNG 0078                          _main 00BB                          btemp 007E  
+                        start 00AD                         ?_main 0078                         _LATC2 0872  
+                       i1l110 0048                         i1l111 001A                         i1l122 0039  
+                       i1l115 0037                         i1l107 009F                         i1l140 0094  
+                       i1l116 002C                         i1l109 0058                         i1l145 00AB  
+                       i1l138 008D                         i1l823 0044                         i1l905 00A9  
+                       i1l837 0054                         i1l829 004D                         i1l859 0065  
+                       i1l877 0079                         i1l895 009A                         i1l887 0081  
+                       i1l889 0083                         _SPBRG 019B                         _PORTA 000C  
+                       _TRISC 008E          _SOFTWARE_I2C_INT_PIC 0004                         status 0003  
+                       wtemp0 007E               __initialization 00AE                  __end_of_main 00E1  
+                      ??_main 0079                        _RC1STA 019D                        _RC5PPS 0EA5  
+                      _INTCON 000B         ?_SOFTWARE_I2C_INT_PIC 0078                        _TX1REG 019A  
+                      _TX1STA 019E                  __pdataCOMMON 007B       __end_of__initialization 00B8  
+              __pcstackCOMMON 0078         __end_of_SOFT_I2C_INIT 00F2        ??_SOFTWARE_I2C_INT_PIC 0078  
+                ??_INT_SETTNG 0079                    __pmaintext 00BB                    __pintentry 0004  
+          __end_of_INT_SETTNG 0102                 ?_SOFT_I2C_INT 0078                       __ptext1 00E1  
+                     __ptext2 00FC                       __ptext4 00F2                     _IOCAFbits 0393  
+                   _IOCANbits 0392                     _IOCAPbits 0391          end_of_initialization 00B8  
+                   _SEND_DATA 007B                ??_SOFT_I2C_INT 0078                     _PORTAbits 000C  
+              _SOFT_I2C_FLAG0 0072                _SOFT_I2C_FLAG1 0071                     _TRISAbits 008C  
+               __pidataCOMMON 0102           start_initialization 00AE                   __pbssCOMMON 0070  
+                   ___latbits 0000          __end_of_SOFT_I2C_INT 00FC           _SOFT_I2C_BIT_COUNT2 0077  
+                    _BAUD1CON 019F           _SOFT_I2C_BYTE_COUNT 0076                      _PIR0bits 0010  
+               _SOFT_I2C_BUFF 0075                 _SOFT_I2C_INIT 00E1                ?_SOFT_I2C_INIT 0078  
+                  _ANSELAbits 018C            _SOFT_I2C_BUFF_PORT 0074                  _SOFT_I2C_INT 00F2  
+                    int$flags 007E                      intlevel1 0000                    _INT_SETTNG 00FC  
+             ??_SOFT_I2C_INIT 0079  __end_of_SOFTWARE_I2C_INT_PIC 00AD              _SOFT_I2C_BUFF_SR 0073  
+             _SOFT_I2C_STATUS 0070  
